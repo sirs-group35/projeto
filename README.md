@@ -26,9 +26,21 @@ No terminal do mysql fazer:
     create database `ala`;
 
 ### Correr Backend
+---
 
-Correr testes: `mvn clean install`
+Compilar: `mvn clean compile`
 
-Criar Jar: `mvn clean package`
+Correr testes: `mvn test`
 
-Correr Jar: `java -jar target/fullstack-backend-0.0.1-SNAPSHOTjar`
+Correr: `mvn spring-boot:run`
+
+### Frontend
+---
+
+O Readme que já existia é bastante self-explanatory, mas no fundo fazem:
+
+`sudo apt-get intall npm` para instalar o npm
+`npm i` na pasta do frontend para instalar dependências
+`npm start` para correr o frontend
+
+# Voilá!
