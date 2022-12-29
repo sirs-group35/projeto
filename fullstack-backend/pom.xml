@@ -8,7 +8,7 @@
 		<version>2.6.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.codewitharjun</groupId>
+	<groupId>sirs.group35.</groupId>
 	<artifactId>fullstack-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>fullstack-backend</name>

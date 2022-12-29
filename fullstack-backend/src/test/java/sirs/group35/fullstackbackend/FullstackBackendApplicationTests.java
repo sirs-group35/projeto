@@ -1,4 +1,4 @@
-package com.codewitharjun.fullstackbackend;
+package sirs.group35.fullstackbackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
