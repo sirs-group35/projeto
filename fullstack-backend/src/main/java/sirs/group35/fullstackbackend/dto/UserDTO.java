@@ -1,26 +1,11 @@
-package sirs.group35.fullstackbackend.model;
+package sirs.group35.fullstackbackend.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-@Entity
-public abstract class User {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class UserDTO {
     private String username;
     private String name;
     private String email;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private boolean lawyer;
+    private boolean manager;
 
     public String getUsername() {
         return username;
@@ -44,5 +29,21 @@ public abstract class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isLawyer() {
+        return lawyer;
+    }
+
+    public void setLawyer(boolean lawyer) {
+        this.lawyer = lawyer;
+    }
+
+    public boolean isManager() {
+        return manager;
+    }
+
+    public void setManager(boolean manager) {
+        this.manager = manager;
     }
 }

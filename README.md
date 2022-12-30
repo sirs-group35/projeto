@@ -8,7 +8,7 @@
 
 2 - Instalar Maven
 
-    sudo apt-get install mvn
+    sudo apt-get install maven
 
 3 - Instalar mysql 10
 
@@ -21,9 +21,15 @@
 
 No terminal do mysql fazer:
     
-    DROP USER 'root'@'localhost';
-    CREATE USER 'root'@'%' IDENTIFIED BY 'password'; (literalmente password)
+    CREATE USER 'ala'@'localhost' identified by 'ala';
     create database `ala`;
+    GRANT ALL PRIVILEGES ON *.* TO 'ala'@'localhost';
+    FLUSH PRIVILEGES;
+    exit;
+
+Por fim:
+
+    sudo service mysql restart
 
 ### Correr Backend
 ---
