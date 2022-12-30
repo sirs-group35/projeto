@@ -10,13 +10,13 @@ import javax.persistence.OneToMany;
 @Entity
 public class Lawyer extends User {
 
-    HashMap<String, Case> legalCases;
+    HashMap<String, LegalCase> legalCases;
 
-    public void addCase(Case legalCase) {
+    public void addCase(LegalCase legalCase) {
         this.legalCases.put(legalCase.getTitle(), legalCase);
     }
 
-    public HashMap<String, Case> getLegalCase() {
+    public HashMap<String, LegalCase> getLegalCase() {
         return legalCases;
     }
 

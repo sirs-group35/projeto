@@ -1,10 +1,10 @@
 package sirs.group35.fullstackbackend.dto;
 
-public class CaseDTO {
+public class LegalCaseDTO {
     private String title;
     private String description;
-    private UserDTO client;
-    private UserDTO lawyer;
+    private String client;
+    private String lawyer;
     private int submittedFiles;
 
     public String getTitle() {
@@ -23,19 +23,19 @@ public class CaseDTO {
         this.description = description;
     }
 
-    public UserDTO getClient() {
+    public String getClient() {
         return client;
     }
 
-    public void setClient(UserDTO client) {
+    public void setClient(String client) {
         this.client = client;
     }
 
-    public UserDTO getLawyer() {
+    public String getLawyer() {
         return lawyer;
     }
 
-    public void setLawyer(UserDTO lawyer) {
+    public void setLawyer(String lawyer) {
         this.lawyer = lawyer;
     }
 

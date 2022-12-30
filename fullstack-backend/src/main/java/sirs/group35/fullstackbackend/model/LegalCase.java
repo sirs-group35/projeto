@@ -7,12 +7,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity
-public class Case {
+public class LegalCase {
     
     // A case has a title, a description, a client, a lawyer and files
 
@@ -28,7 +26,7 @@ public class Case {
     @ManyToOne(cascade = CascadeType.ALL)
     private Lawyer lawyer;
 
-    private HashMap<String, File> files;
+    private HashMap<String, File> files = new HashMap<String, File>();
 
     public String getTitle() {
         return title;

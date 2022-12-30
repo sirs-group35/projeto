@@ -1,15 +1,10 @@
 package sirs.group35.fullstackbackend.controller;
 
-import sirs.group35.fullstackbackend.dto.CaseDTO;
+import sirs.group35.fullstackbackend.dto.LegalCaseDTO;
 import sirs.group35.fullstackbackend.dto.UserDTO;
 import sirs.group35.fullstackbackend.exception.UserNotFoundException;
-import sirs.group35.fullstackbackend.model.Lawyer;
-import sirs.group35.fullstackbackend.model.User;
-import sirs.group35.fullstackbackend.repository.CaseRepository;
 import sirs.group35.fullstackbackend.services.CaseService;
 import sirs.group35.fullstackbackend.services.UserService;
-import sirs.group35.fullstackbackend.model.Case;
-import sirs.group35.fullstackbackend.model.Client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +14,11 @@ import java.util.List;
 @CrossOrigin("http://localhost:3000")
 public class UserController {
 
-    UserService userService;
+    @Autowired
+    private UserService userService = new UserService();
 
-    CaseService caseService;
+    @Autowired
+    private CaseService caseService = new CaseService();
 
     @PostMapping("/user")
     UserDTO newUser(@RequestBody UserDTO newUserDTO) {
@@ -43,14 +40,14 @@ public class UserController {
         return userService.listAllUsers();
     }
 
-    @GetMapping("/cases")
-    List<CaseDTO> getAllCases() {
-        return caseService.listAllCases();
+    @GetMapping("/legalCases")
+    List<LegalCaseDTO> getAllLegalCases() {
+        return caseService.listAllLegalCases();
     }
 
-    @PutMapping("/case")
-    CaseDTO registerCase(@RequestBody CaseDTO newCaseDTO) {
-        return caseService.registerCase(newCaseDTO);
+    @PostMapping("/legalCase")
+    LegalCaseDTO registerCase(@RequestBody LegalCaseDTO newLegalCaseDTO) {
+        return caseService.registerLegalCase(newLegalCaseDTO);
     }
 
     // @GetMapping("/user/{id}")
