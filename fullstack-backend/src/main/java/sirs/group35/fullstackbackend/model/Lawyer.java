@@ -20,7 +20,5 @@ public class Lawyer extends User {
         return legalCases;
     }
 
-    public void getCaseFiles(String title) {
-        legalCases.get(title).getFiles();
-    }    
+
 }

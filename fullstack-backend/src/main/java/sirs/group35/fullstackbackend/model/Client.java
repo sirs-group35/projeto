@@ -22,7 +22,5 @@ public class Client extends User {
         return legalCases;
     }
 
-    public void submitFile(String title, File file) {
-        legalCases.get(title).getFiles().put(file.getName(), file);
-    }
+
 }

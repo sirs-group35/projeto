@@ -2,12 +2,18 @@ package sirs.group35.fullstackbackend.model;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 public class LegalCase {
@@ -26,7 +32,8 @@ public class LegalCase {
     @ManyToOne(cascade = CascadeType.ALL)
     private Lawyer lawyer;
 
-    private HashMap<String, File> files = new HashMap<String, File>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private Map<String, FileDB> files = new HashMap<String, FileDB>();
 
     public String getTitle() {
         return title;
@@ -60,7 +67,15 @@ public class LegalCase {
         this.lawyer = lawyer;
     }
 
-    public HashMap<String, File> getFiles() {
+    public FileDB getFile(String name) {
+        return files.get(name);
+    }
+
+    public void addFile(String fileName, FileDB file) {
+        this.files.put(fileName, file);
+    }
+
+    public Map<String, FileDB> getFiles() {
         return files;
     }
 
