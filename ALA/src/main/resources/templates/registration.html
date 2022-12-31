@@ -11,7 +11,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">ALA</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -21,19 +22,20 @@
                     <a class="nav-link mx-2 active" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Organization</a>
+                    <a class="nav-link mx-2" href="#">Blabla</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Areas</a>
+                    <a class="nav-link mx-2" href="#">Bleble</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         Company
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Firm Organization</a></li>
-                        <li><a class="dropdown-item" href="#">Areas Of Activity</a></li>
-                        <li><a class="dropdown-item" href="#">Contact us</a></li>
+                        <li><a class="dropdown-item" th:href="@{/Firm_Organization}">Firm Organization</a></li>
+                        <li><a class="dropdown-item" th:href="@{/Areas_Of_Activity}">Areas Of Activity</a></li>
+                        <li><a class="dropdown-item" th:href="@{/Firm_Contacts}">Contact us</a></li>
                     </ul>
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">
@@ -46,6 +48,7 @@
         </div>
     </div>
 </nav>
+
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -62,12 +65,14 @@
                                     You have successfully registered.
                                 </div>
 
-                                <form class="mx-1 mx-md-4" th:action="@{/registration}" method="post" th:object="${user}">
+                                <form class="mx-1 mx-md-4" th:action="@{/registration}" method="post"
+                                      th:object="${user}">
 
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
-                                            <input type="text" id="firstName" class="form-control" th:field="*{firstName}" required autofocus="autofocus"/>
+                                            <input type="text" id="firstName" class="form-control"
+                                                   th:field="*{firstName}" required autofocus="autofocus"/>
                                             <label class="form-label" for="firstName">Your First Name</label>
                                         </div>
                                     </div>
@@ -75,7 +80,8 @@
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
-                                            <input type="text" id="lastName" class="form-control" th:field="*{lastName}" required autofocus="autofocus"/>
+                                            <input type="text" id="lastName" class="form-control" th:field="*{lastName}"
+                                                   required autofocus="autofocus"/>
                                             <label class="form-label" for="lastName">Your Last Name</label>
                                         </div>
                                     </div>
@@ -83,7 +89,8 @@
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
-                                            <input type="email" id="email" class="form-control" th:field="*{email}" required autofocus="autofocus"/>
+                                            <input type="email" id="email" class="form-control" th:field="*{email}"
+                                                   required autofocus="autofocus"/>
                                             <label class="form-label" for="email">Your Email</label>
                                         </div>
                                     </div>
@@ -91,7 +98,8 @@
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
-                                            <input type="password" id="password" class="form-control" th:field="*{password}" required autofocus="autofocus"/>
+                                            <input type="password" id="password" class="form-control"
+                                                   th:field="*{password}" required autofocus="autofocus"/>
                                             <label class="form-label" for="password">Password</label>
                                         </div>
                                     </div>
@@ -100,7 +108,10 @@
                                         <button type="submit" class="btn btn-primary btn-lg">Register</button>
                                     </div>
 
-                                    <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/" th:href="@{/login}" class="fw-bold text-body"><u>Login here</u></a></p>
+                                    <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/"
+                                                                                                            th:href="@{/login}"
+                                                                                                            class="fw-bold text-body"><u>Login
+                                        here</u></a></p>
 
                                 </form>
 
