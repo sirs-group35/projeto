@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import sirs.group35.ala.model.Client;
+import sirs.group35.ala.model.Lawyer;
 import sirs.group35.ala.model.Role;
 import sirs.group35.ala.model.User;
 import sirs.group35.ala.repository.UserRepository;
@@ -43,10 +45,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(UserRegistrationDto registrationDto) {
-        User user = new User(registrationDto.getFirstName(), registrationDto.getLastName(),
+    public Client saveClient(UserRegistrationDto registrationDto) {
+        Client user = new Client(registrationDto.getFirstName(), registrationDto.getLastName(),
                 registrationDto.getEmail(), passwordEncoder.encode(registrationDto.getPassword()),
-                List.of(new Role("ROLE_USER")));
+                List.of(new Role("ROLE_CLIENT")));
+        return userRepository.save(user);
+    }
+
+    @Override
+    public Lawyer saveLawyer(UserRegistrationDto registrationDto) {
+        Lawyer user = new Lawyer(registrationDto.getFirstName(), registrationDto.getLastName(),
+                registrationDto.getEmail(), passwordEncoder.encode(registrationDto.getPassword()),
+                List.of(new Role("ROLE_LAWYER")));
         return userRepository.save(user);
     }
 }

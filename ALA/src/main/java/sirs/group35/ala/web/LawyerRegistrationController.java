@@ -9,12 +9,12 @@ import sirs.group35.ala.service.UserService;
 import sirs.group35.ala.web.dto.UserRegistrationDto;
 
 @Controller
-@RequestMapping("/registration")
-public class UserRegistrationController {
+@RequestMapping("/registration-lawyer")
+public class LawyerRegistrationController {
 
     private final UserService userService;
 
-    public UserRegistrationController(UserService userService) {
+    public LawyerRegistrationController(UserService userService) {
         super();
         this.userService = userService;
     }
@@ -26,16 +26,16 @@ public class UserRegistrationController {
 
     @GetMapping
     public String showRegistrationForm() {
-        return "registration";
+        return "registration-lawyer";
     }
 
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto accountDto) {
 
         // Print saving to console
-        System.out.println("Saving user: " + accountDto.getFirstName() + " " + accountDto.getLastName() + " " + accountDto.getEmail() + " " + accountDto.getPassword());
+        System.out.println("Saving Lawyer: " + accountDto.getFirstName() + " " + accountDto.getLastName() + " " + accountDto.getEmail() + " " + accountDto.getPassword());
 
-        userService.saveClient(accountDto);
-        return "redirect:/registration?success";
+        userService.saveLawyer(accountDto);
+        return "redirect:/registration-lawyer?success";
     }
 }
