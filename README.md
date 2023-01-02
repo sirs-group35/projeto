@@ -1,7 +1,9 @@
 # ALA Project
 
-### Configurar Backend
+### Dependências
 ---
+
+#### WebServer
 1 - Instalar jdk 17
 
     sudo apt-get install openjdk-17-jdk-headless
@@ -10,20 +12,24 @@
 
     sudo apt-get install mvn
 
-3 - Instalar mysql 10
+#### Database
+1 - Instalar mysql 10
 
     sudo apt-get install mysql-server
 
-4 - Configurar mysql
+2 - Configurar mysql
     
-    sudo service mysql start
-    sudo mysql -u root
+    sudo systemctl enable mysql
+    sudo systemctl start mysql
+    sudo mysql -u root -p
 
 No terminal do mysql fazer:
     
     DROP USER 'root'@'localhost';
-    CREATE USER 'root'@'%' IDENTIFIED BY 'password'; (literalmente password)
-    create database `ala`;
+    CREATE USER 'ala'@'192.168.0.11' IDENTIFIED BY 'password'; -- (literalmente password)
+    CREATE DATABASE `ala`;
+    GRANT INSERT, UPDATE, DELETE, SELECT, REFERENCES, ALTER, CREATE ON ala.* TO 'ala'@'192.168.0.11';
+    FLUSH PRIVILEGES;
 
 ### Correr Backend
 ---
@@ -33,14 +39,5 @@ Compilar: `mvn clean compile`
 Correr testes: `mvn test`
 
 Correr: `mvn spring-boot:run`
-
-### Frontend
----
-
-O Readme que já existia é bastante self-explanatory, mas no fundo fazem:
-
-`sudo apt-get intall npm` para instalar o npm
-`npm i` na pasta do frontend para instalar dependências
-`npm start` para correr o frontend
 
 # Voilá!
