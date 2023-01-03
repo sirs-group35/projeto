@@ -36,6 +36,6 @@ public class LawyerRegistrationController {
         System.out.println("Saving Lawyer: " + accountDto.getFirstName() + " " + accountDto.getLastName() + " " + accountDto.getEmail() + " " + accountDto.getPassword());
 
         userService.saveLawyer(accountDto);
-        return "redirect:/registration-lawyer?success";
+        return "redirect:/manager/registration-lawyer?success";
     }
 }

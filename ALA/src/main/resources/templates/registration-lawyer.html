@@ -27,6 +27,9 @@
                 <li class="nav-item">
                     <a class="nav-link mx-2" href="#">Bleble</a>
                 </li>
+                <li class="nav-item">
+                    <a sec:authorize="hasRole('MANAGER')" class="nav-link mx-2" href="/manager/registration-lawyer">Register Lawyer</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
@@ -62,10 +65,10 @@
 
                                 <! Success message>
                                 <div th:if="${param.success}" class="alert alert-success" role="alert">
-                                    You have successfully registered.
+                                    You have successfully registered a new lawyer.
                                 </div>
 
-                                <form class="mx-1 mx-md-4" th:action="@{/registration-lawyer}" method="post"
+                                <form class="mx-1 mx-md-4" th:action="@{/manager/registration-lawyer}" method="post"
                                       th:object="${user}">
 
                                     <div class="d-flex flex-row align-items-center mb-4">
