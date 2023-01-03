@@ -9,7 +9,7 @@ import sirs.group35.ala.service.UserService;
 import sirs.group35.ala.web.dto.UserRegistrationDto;
 
 @Controller
-@RequestMapping("/registration-lawyer")
+@RequestMapping("/manager/registration-lawyer")
 public class LawyerRegistrationController {
 
     private final UserService userService;
