@@ -1,25 +1,22 @@
 package sirs.group35.ala.service;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import sirs.group35.ala.model.Client;
 import sirs.group35.ala.model.FileDB;
 import sirs.group35.ala.model.Lawyer;
 import sirs.group35.ala.model.LegalCase;
-import sirs.group35.ala.model.User;
 import sirs.group35.ala.repository.ClientRepository;
 import sirs.group35.ala.repository.FileDBRepository;
 import sirs.group35.ala.repository.LawyerRepository;
 import sirs.group35.ala.repository.LegalCaseRepository;
-import sirs.group35.ala.repository.UserRepository;
-// TODO: Exceptions - import sirs.group35.ala.exception.StorageException;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CaseServiceImpl implements CaseService {
@@ -36,6 +33,7 @@ public class CaseServiceImpl implements CaseService {
     @Autowired
     private LawyerRepository lawyerRepository;
 
+    @Override
     public List<LegalCaseDTO> listAllLegalCases() {
         List<LegalCase> cases = legalCaseRepository.findAll();
         List<LegalCaseDTO> legalCaseDTOs = new ArrayList<>();
@@ -47,26 +45,44 @@ public class CaseServiceImpl implements CaseService {
             legalCaseDTO.setClientEmail(clientEmail);
             String lawyerEmail = legalCase.getLawyer().getEmail();
             legalCaseDTO.setLawyerEmail(lawyerEmail);
-            legalCaseDTO.setSubmittedFiles(legalCase.getFiles().size());
             legalCaseDTOs.add(legalCaseDTO);
         }
         return legalCaseDTOs;
     }
 
+    @Override
     public LegalCaseDTO registerLegalCase(LegalCaseDTO newLegalCaseDTO) {
         LegalCase newLegalCase = new LegalCase();
         newLegalCase.setTitle(newLegalCaseDTO.getTitle());
+
+        System.out.println("Title: " + newLegalCaseDTO.getTitle());
+
         newLegalCase.setDescription(newLegalCaseDTO.getDescription());
+
+        System.out.println("Description: " + newLegalCaseDTO.getDescription());
+
         Client client = clientRepository.findByEmail(newLegalCaseDTO.getClientEmail());
         newLegalCase.setClient(client);
 
+        System.out.println("Client: " + newLegalCaseDTO.getClientEmail());
+
         Lawyer lawyer = lawyerRepository.findByEmail(newLegalCaseDTO.getLawyerEmail());
         newLegalCase.setLawyer(lawyer);
+
+        System.out.println("Lawyer: " + newLegalCaseDTO.getLawyerEmail());
+
+        client.addCase(newLegalCase);
+        lawyer.addCase(newLegalCase);
+
+        // clientRepository.save(client);
+        // lawyerRepository.save(lawyer);
         legalCaseRepository.save(newLegalCase);
 
         return newLegalCaseDTO;
+
     }
 
+    @Override
     public List<String> listLegalCaseFileNames(String title) {
         List<LegalCase> cases = legalCaseRepository.findAll();
         List<String> fileNames = new ArrayList<>();
@@ -78,6 +94,7 @@ public class CaseServiceImpl implements CaseService {
         return fileNames;
     }
 
+
     private LegalCase getLegalCase(String title) {
         List<LegalCase> cases = legalCaseRepository.findAll();
         for (LegalCase legalCase : cases) {
@@ -88,6 +105,7 @@ public class CaseServiceImpl implements CaseService {
         return null;
     }
 
+    @Override
     public String submitDocument(String title, MultipartFile file) {
 		try {
 			if (file.isEmpty()) {
@@ -120,6 +138,7 @@ public class CaseServiceImpl implements CaseService {
         return "File stored successfully.";
     }
 
+    @Override
     public List<String> getDocuments(String title) {
         LegalCase legalCase = getLegalCase(title);
         if (legalCase == null) {
@@ -128,6 +147,7 @@ public class CaseServiceImpl implements CaseService {
         return legalCase.getFiles().keySet().stream().toList();
     }
 
+    @Override
     public FileDB getDocument(String title, String documentName) {
         LegalCase legalCase = getLegalCase(title);
         if (legalCase == null) {

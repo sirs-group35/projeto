@@ -1,6 +1,8 @@
 package sirs.group35.ala.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 import java.util.Collection;
 import java.util.HashMap;

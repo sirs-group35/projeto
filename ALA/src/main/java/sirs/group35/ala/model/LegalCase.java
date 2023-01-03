@@ -1,17 +1,12 @@
 package sirs.group35.ala.model;
 
+import jakarta.persistence.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-
 @Entity
+@Table(name = "legal_case", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
 public class LegalCase {
     
     // A case has a title, a description, a client, a lawyer and files

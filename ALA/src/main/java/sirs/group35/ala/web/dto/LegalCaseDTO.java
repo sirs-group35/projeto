@@ -5,7 +5,6 @@ public class LegalCaseDTO {
     private String description;
     private String clientEmail;
     private String lawyerEmail;
-    private int submittedFiles;
 
     public String getTitle() {
         return title;
@@ -37,14 +36,6 @@ public class LegalCaseDTO {
 
     public void setLawyerEmail(String lawyerEmail) {
         this.lawyerEmail = lawyerEmail;
-    }
-
-    public int getSubmittedFiles() {
-        return submittedFiles;
-    }
-
-    public void setSubmittedFiles(int submittedFiles) {
-        this.submittedFiles = submittedFiles;
     }
 
 }
