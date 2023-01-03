@@ -3,7 +3,6 @@ package sirs.group35.ala.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,7 +35,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
                 .requestMatchers("/manager/**").hasRole("MANAGER")
-                .requestMatchers("/registration**", "/js/**", "/css/**", "/img/**", "/").permitAll()
+                .requestMatchers("/registration**", "/js/**", "/css/**", "/img/**", "/", "/loginUser**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -48,6 +47,7 @@ public class SecurityConfiguration {
                 .logout()
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/loginUser?logout")
                 .permitAll();

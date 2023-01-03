@@ -1,6 +1,6 @@
 package sirs.group35.ala.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
 
 import java.util.Collection;
 

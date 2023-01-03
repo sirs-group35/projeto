@@ -59,5 +59,10 @@ public class UserServiceImpl implements UserService {
                 List.of(new Role("ROLE_LAWYER")));
         return userRepository.save(user);
     }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }
 

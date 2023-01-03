@@ -27,7 +27,7 @@
                     <a class="nav-link mx-2" href="#">Bleble</a>
                 </li>
                 <li class="nav-item">
-                    <a sec:authorize="hasRole('MANAGER')" class="nav-link mx-2" href="/manager/registration-lawyer">Register Lawyer</a>
+                    <a sec:authorize="hasRole('MANAGER')" class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -65,6 +65,11 @@
                                 <! Log out Message >
                                 <div th:if="${param.logout}" class="alert alert-success" role="alert">
                                     You have successfully logged out.
+                                </div>
+
+                                <! Registration success message>
+                                <div th:if="${param.registrationSuccess}" class="alert alert-success" role="alert">
+                                    You have successfully registered! Please log in.
                                 </div>
 
                                 <! Error Message >

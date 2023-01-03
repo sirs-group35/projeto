@@ -8,6 +8,7 @@ import sirs.group35.ala.web.dto.UserRegistrationDto;
 public interface UserService extends UserDetailsService {
     User saveClient(UserRegistrationDto registrationDto);
     Lawyer saveLawyer(UserRegistrationDto registrationDto);
+    void deleteUser(Long id);
 }
 
 

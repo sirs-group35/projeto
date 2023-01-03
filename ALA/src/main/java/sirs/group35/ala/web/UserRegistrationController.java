@@ -36,6 +36,6 @@ public class UserRegistrationController {
         System.out.println("Saving user: " + accountDto.getFirstName() + " " + accountDto.getLastName() + " " + accountDto.getEmail() + " " + accountDto.getPassword());
 
         userService.saveClient(accountDto);
-        return "redirect:/registration?success";
+        return "redirect:/loginUser?registrationSuccess";
     }
 }
