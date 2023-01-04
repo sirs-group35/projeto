@@ -26,6 +26,14 @@ public class LegalCase {
     @OneToMany(cascade = CascadeType.ALL)
     private Map<String, FileDB> files = new HashMap<String, FileDB>();
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -47,6 +55,7 @@ public class LegalCase {
     }
 
     public void setClient(Client client) {
+        System.out.println("Client: " + client.toString() + ", ID: " + client.getId().toString());
         this.client = client;
     }
 
@@ -55,6 +64,7 @@ public class LegalCase {
     }
 
     public void setLawyer(Lawyer lawyer) {
+        System.out.println("Lawyer: " + lawyer.toString() + ", ID: " + lawyer.getId().toString());
         this.lawyer = lawyer;
     }
 

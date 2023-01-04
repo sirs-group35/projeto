@@ -10,6 +10,7 @@ import sirs.group35.ala.model.Client;
 import sirs.group35.ala.model.Lawyer;
 import sirs.group35.ala.model.Role;
 import sirs.group35.ala.model.User;
+import sirs.group35.ala.repository.RoleRepository;
 import sirs.group35.ala.repository.UserRepository;
 import sirs.group35.ala.web.dto.UserRegistrationDto;
 
@@ -21,12 +22,14 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         super();
+        this.roleRepository = roleRepository;
         this.userRepository = userRepository;
     }
 
@@ -46,17 +49,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Client saveClient(UserRegistrationDto registrationDto) {
+        Role role = roleRepository.findByName("ROLE_CLIENT");
+        if (role == null) {
+            role = new Role("ROLE_CLIENT");
+            roleRepository.save(role);
+        }
         Client user = new Client(registrationDto.getFirstName(), registrationDto.getLastName(),
                 registrationDto.getEmail(), passwordEncoder.encode(registrationDto.getPassword()),
-                List.of(new Role("ROLE_CLIENT")));
+                List.of(role));
         return userRepository.save(user);
     }
 
     @Override
     public Lawyer saveLawyer(UserRegistrationDto registrationDto) {
+        Role role = roleRepository.findByName("ROLE_LAWYER");
+        if (role == null) {
+            role = new Role("ROLE_LAWYER");
+            roleRepository.save(role);
+        }
         Lawyer user = new Lawyer(registrationDto.getFirstName(), registrationDto.getLastName(),
                 registrationDto.getEmail(), passwordEncoder.encode(registrationDto.getPassword()),
-                List.of(new Role("ROLE_LAWYER")));
+                List.of(role));
         return userRepository.save(user);
     }
 
