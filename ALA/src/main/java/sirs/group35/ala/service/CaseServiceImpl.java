@@ -55,25 +55,17 @@ public class CaseServiceImpl implements CaseService {
         LegalCase newLegalCase = new LegalCase();
         newLegalCase.setTitle(newLegalCaseDTO.getTitle());
 
-        System.out.println("Title: " + newLegalCase.getTitle());
-
         newLegalCase.setDescription(newLegalCaseDTO.getDescription());
 
-        System.out.println("Description: " + newLegalCase.getDescription());
-
         Client client = clientRepository.findByEmail(newLegalCaseDTO.getClientEmail());
-        newLegalCase.setClient(client);
-
-        System.out.println("Client: " + newLegalCase.getClient().getEmail());
 
         Lawyer lawyer = lawyerRepository.findByEmail(newLegalCaseDTO.getLawyerEmail());
-        newLegalCase.setLawyer(lawyer);
 
-        System.out.println("Lawyer: " + newLegalCaseDTO.getLawyerEmail());
-
-        legalCaseRepository.save(newLegalCase);
         client.addCase(newLegalCase);
         lawyer.addCase(newLegalCase);
+        newLegalCase.setLawyer(lawyer);
+        newLegalCase.setClient(client);
+        legalCaseRepository.save(newLegalCase);
 
         //clientRepository.save(client);
         //lawyerRepository.save(lawyer);

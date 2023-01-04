@@ -24,6 +24,9 @@ public class LegalCase {
     private Lawyer lawyer;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "case_file",
+            joinColumns = @JoinColumn(name = "case_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "file_id", referencedColumnName = "id", unique = true))
     private Map<String, FileDB> files = new HashMap<String, FileDB>();
 
     public Long getId() {
