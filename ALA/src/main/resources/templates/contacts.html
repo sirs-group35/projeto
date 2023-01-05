@@ -23,10 +23,10 @@
                 <li class="nav-item">
                     <a class="nav-link mx-2" href="#">Blabla</a>
                 </li>
-                <li class="nav-item">
-                    <a sec:authorize="hasRole('MANAGER')" class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
+                <li sec:authorize="hasRole('MANAGER')" class="nav-item">
+                    <a class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="isAuthenticated()" class="nav-item">
                     <a class="nav-link mx-2" href="/legalCase/list">Cases</a>
                 </li>
                 <li class="nav-item dropdown">
