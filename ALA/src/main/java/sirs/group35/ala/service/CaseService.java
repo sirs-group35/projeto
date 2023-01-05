@@ -14,12 +14,10 @@ public interface CaseService {
 
     LegalCaseDTO registerLegalCase(LegalCaseDTO newLegalCaseDTO);
 
-    List<String> listLegalCaseFileNames(String title);
+    String submitDocument(Long caseId, MultipartFile file);
 
-    String submitDocument(String title, MultipartFile file);
+    List<String> getDocuments(Long id);
 
-    List<String> getDocuments(String title);
-
-    FileDB getDocument(String title, String documentName);
+    FileDB getDocument(Long id, String documentName);
 
 }

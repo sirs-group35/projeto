@@ -12,7 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 import sirs.group35.ala.model.*;
 import sirs.group35.ala.repository.*;
 import sirs.group35.ala.service.CaseService;
+import sirs.group35.ala.web.dto.FileSubmissionDTO;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
+import sirs.group35.ala.web.dto.UserRegistrationDto;
 
 import java.util.Collection;
 import java.util.List;
@@ -84,9 +86,6 @@ public class LegalCaseController {
 
         ModelAndView mav = new ModelAndView("list-cases");
 
-        System.out.println("Authentication: " + authentication);
-        System.out.println("Principal: " + authentication.getPrincipal());
-
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             User user = userRepository.findByEmail(((UserDetails) authentication.getPrincipal()).getUsername());
 
@@ -104,21 +103,30 @@ public class LegalCaseController {
         return mav;
     }
 
-    @PostMapping("/legalCase/{title}/submit-document")
-    String submitDocument(@PathVariable String title, @RequestParam("file") MultipartFile file) {
-        caseService.submitDocument(title, file);
-
-        return "Success!";
+    @GetMapping("/legalCase/submit-document/{id}")
+    ModelAndView showSubmitDocumentForm(@PathVariable Long id) {
+        ModelAndView mav = new ModelAndView("submit-document");
+        mav.addObject("caseId", id);
+        return mav;
     }
 
-    @GetMapping("/legalCase/{title}/documents")
-    List<String> getDocuments(@PathVariable String title) {
-        return caseService.getDocuments(title);
+    @PostMapping("/legalCase/submit-document/{id}")
+    String submitDocument(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
+
+
+        caseService.submitDocument(id, file);
+
+        return "redirect:/legalCase/list?fileSubmitSuccess";
+    }
+
+    @GetMapping("/legalCase/documents/{id}")
+    List<String> getDocuments(@PathVariable Long id) {
+        return caseService.getDocuments(id);
     }
     
-    @GetMapping("/legalCase/{title}/documents/{documentName}")
-    ResponseEntity<byte[]> getDocument(@PathVariable String title, @PathVariable String documentName) {
-        FileDB file = caseService.getDocument(title, documentName);
+    @GetMapping("/legalCase/documents//{id}/{documentName}")
+    ResponseEntity<byte[]> getDocument(@PathVariable Long id, @PathVariable String documentName) {
+        FileDB file = caseService.getDocument(id, documentName);
         return ResponseEntity.ok()
         .header("attachment; filename=\"" + file.getName() + "\"")
         .body(file.getData());

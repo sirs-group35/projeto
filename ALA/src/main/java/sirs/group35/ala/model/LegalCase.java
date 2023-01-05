@@ -2,7 +2,9 @@ package sirs.group35.ala.model;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 @Entity
@@ -27,7 +29,7 @@ public class LegalCase {
     @JoinTable(name = "case_file",
             joinColumns = @JoinColumn(name = "case_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "file_id", referencedColumnName = "id", unique = true))
-    private Map<String, FileDB> files = new HashMap<String, FileDB>();
+    private Collection<FileDB> files = new HashSet<FileDB>();
 
     public Long getId() {
         return id;
@@ -71,15 +73,11 @@ public class LegalCase {
         this.lawyer = lawyer;
     }
 
-    public FileDB getFile(String name) {
-        return files.get(name);
+    public void addFile(FileDB file) {
+        this.files.add(file);
     }
 
-    public void addFile(String fileName, FileDB file) {
-        this.files.put(fileName, file);
-    }
-
-    public Map<String, FileDB> getFiles() {
+    public Collection<FileDB> getFiles() {
         return files;
     }
 

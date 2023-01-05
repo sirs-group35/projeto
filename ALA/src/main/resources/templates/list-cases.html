@@ -60,6 +60,11 @@
     You have successfully created a new case.
 </div>
 
+<! Case creation success message>
+<div th:if="${param.fileSubmitSuccess}" class="alert alert-success" role="alert">
+    You have successfully submited a new file.
+</div>
+
 <! Delete success message>
 <div th:if="${param.deleteSuccess}" class="alert alert-danger" role="alert">
     You have deleted a case.
@@ -79,7 +84,7 @@
             <th>Description</th>
             <th>Client</th>
             <th>Lawyer</th>
-            <th sec:authorize="hasRole('MANAGER')">Actions</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -88,8 +93,9 @@
             <td th:text="${case.description}"/>
             <td th:text="${case.client.getFullName()}"/>
             <td th:text="${case.lawyer.getFullName()}"/>
-            <td sec:authorize="hasRole('MANAGER')">
-                <a th:href="@{/legalCase/delete/{id}(id=${case.id})}" class="btn btn-danger">Delete</a>
+            <td>
+                <a sec:authorize="hasRole('MANAGER')" th:href="@{/legalCase/delete/{id}(id=${case.id})}" class="btn btn-danger">Delete</a>
+                <a th:href="@{/legalCase/submit-document/{id}(id=${case.id})}" class="btn btn-danger">Upload File</a>
             </td>
         </tr>
         </tbody>

@@ -87,42 +87,30 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public List<String> listLegalCaseFileNames(String title) {
-        List<LegalCase> cases = legalCaseRepository.findAll();
-        List<String> fileNames = new ArrayList<>();
-        for (LegalCase legalCase : cases) {
-            if (legalCase.getTitle().equals(title)) {
-                fileNames = legalCase.getFiles().keySet().stream().toList();
-            }
-        }
-        return fileNames;
-    }
-
-
-    private LegalCase getLegalCase(String title) {
-        List<LegalCase> cases = legalCaseRepository.findAll();
-        for (LegalCase legalCase : cases) {
-            if (legalCase.getTitle().equals(title)) {
-                return legalCase;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String submitDocument(String title, MultipartFile file) {
+    public String submitDocument(Long caseId, MultipartFile file) {
 		try {
 			if (file.isEmpty()) {
                 //TODO: Não devia ser IOException
 				throw new IOException("Failed to store empty file.");
 			}
-			
-            LegalCase legalCase = getLegalCase(title);
+
+            // Print case id
+            System.out.println("Case ID: " + caseId);
+
+            // Print file name
+            System.out.println("File name: " + file.getOriginalFilename());
+
+            LegalCase legalCase = legalCaseRepository.findById(caseId).get();
+
+            // Print legalCase name
+            System.out.println("LegalCase name: " + legalCase.getTitle());
+
             if (legalCase == null) {
                 //TODO: Não devia ser IOException
                 throw new IOException("Case not found.");
             }
-            if (legalCase.getFiles().containsKey(file.getOriginalFilename())) {
+
+            if (legalCase.getFiles().stream().map(FileDB::getName).toList().contains(file.getOriginalFilename())) {
                 //TODO: Não devia ser IOException
                 throw new IOException("File already exists.");
             }
@@ -131,7 +119,7 @@ public class CaseServiceImpl implements CaseService {
             fileDB.setName(fileName);
             fileDB.setType(file.getContentType());
             fileDB.setData(file.getBytes());
-            legalCase.addFile(fileName, fileDB);
+            legalCase.addFile(fileDB);
 
             fileDBRepository.save(fileDB);
             legalCaseRepository.save(legalCase);
@@ -143,21 +131,22 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public List<String> getDocuments(String title) {
-        LegalCase legalCase = getLegalCase(title);
+    public List<String> getDocuments(Long caseId) {
+        LegalCase legalCase = legalCaseRepository.findById(caseId).get();
         if (legalCase == null) {
             return null;
         }
-        return legalCase.getFiles().keySet().stream().toList();
+        return legalCase.getFiles().stream().map(FileDB::getName).toList();
     }
 
     @Override
-    public FileDB getDocument(String title, String documentName) {
-        LegalCase legalCase = getLegalCase(title);
+    public FileDB getDocument(Long caseId, String documentName) {
+        LegalCase legalCase = legalCaseRepository.findById(caseId).get();
         if (legalCase == null) {
             return null;
         }
-        return legalCase.getFiles().get(documentName);
+        //Get file with documentName from case
+        return legalCase.getFiles().stream().filter(file -> file.getName().equals(documentName)).findFirst().orElse(null);
     }
 
 }
