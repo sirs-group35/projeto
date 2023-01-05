@@ -12,9 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import sirs.group35.ala.model.*;
 import sirs.group35.ala.repository.*;
 import sirs.group35.ala.service.CaseService;
-import sirs.group35.ala.web.dto.FileSubmissionDTO;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
-import sirs.group35.ala.web.dto.UserRegistrationDto;
 
 import java.util.Collection;
 import java.util.List;
@@ -43,20 +41,71 @@ public class LegalCaseController {
         this.clientRepository = clientRepository;
         this.userRepository = userRepository;
     }
-    
-    @ModelAttribute("legalCase")
-    public LegalCaseDTO legalCaseDTO() {
-        return new LegalCaseDTO();
-    }
 
     @GetMapping("/legalCase/create")
-    public String showRegistrationForm() {
-        return "create-case";
+    public ModelAndView showRegistrationForm() {
+        ModelAndView mav = new ModelAndView("create-case");
+
+        LegalCaseDTO newCase = new LegalCaseDTO();
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            User user = userRepository.findByEmail(((UserDetails) authentication.getPrincipal()).getUsername());
+
+            Collection<Role> userRoles = user.getRoles();
+
+            if (userRoles.contains(roleRepository.findByName("ROLE_MANAGER"))) {
+                newCase.setLawyerEmail("manager");
+                mav.addObject("lawyers", lawyerRepository.findAll());
+            } else if (userRoles.contains(roleRepository.findByName("ROLE_LAWYER"))) {
+                newCase.setLawyerEmail(user.getEmail());
+            }
+        }
+
+        // Add all current clients to mav
+        mav.addObject("clients", clientRepository.findAll());
+
+        mav.addObject("legalCase", newCase);
+
+        return mav;
     }
 
     @PostMapping("/legalCase/create")
     String registerCase(@ModelAttribute LegalCaseDTO newLegalCaseDTO) {
-        caseService.registerLegalCase(newLegalCaseDTO);
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+
+        // Check if legal case already exists
+        if (legalCaseRepository.findByTitle(newLegalCaseDTO.getTitle()) != null) {
+            return "redirect:/legalCase/create?caseExists";
+        }
+
+        // Check if client doesn't exist and launch error
+        if (clientRepository.findByEmail(newLegalCaseDTO.getClientEmail()) == null) {
+            return "redirect:/legalCase/create?clientNotFound";
+        }
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            User user = userRepository.findByEmail(((UserDetails) authentication.getPrincipal()).getUsername());
+
+            Collection<Role> userRoles = user.getRoles();
+
+            if (userRoles.contains(roleRepository.findByName("ROLE_MANAGER"))) {
+                caseService.registerLegalCase(newLegalCaseDTO);
+            } else if (userRoles.contains(roleRepository.findByName("ROLE_LAWYER"))) {
+                Lawyer lawyer = lawyerRepository.findByEmail(user.getEmail());
+
+                // Check if lawyer DTO email is the same as the logged in lawyer
+                if (newLegalCaseDTO.getLawyerEmail().equals(lawyer.getEmail())) {
+                    caseService.registerLegalCase(newLegalCaseDTO);
+                }
+                else {
+                    return "redirect:/legalCase/create?invalidLawyer";
+                }
+            }
+        }
 
         return "redirect:/legalCase/list?createSuccess";
     }

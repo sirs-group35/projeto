@@ -3,9 +3,7 @@ package sirs.group35.ala.model;
 import jakarta.persistence.*;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 @Entity
 @Table(name = "legal_case", uniqueConstraints = @UniqueConstraint(columnNames = "title"))

@@ -1,91 +1,90 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-  <title>Registration</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Registration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-3">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">ALA</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">ALA</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav ms-auto ">
-        <li class="nav-item">
-          <a class="nav-link mx-2 active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link mx-2" href="#">Blabla</a>
-        </li>
-        <li sec:authorize="hasRole('MANAGER')" class="nav-item">
-          <a class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
-        </li>
-        <li sec:authorize="isAuthenticated()" class="nav-item">
-          <a class="nav-link mx-2" href="/legalCase/list">Cases</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
-            Company
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" th:href="@{/Firm_Organization}">Firm Organization</a></li>
-            <li><a class="dropdown-item" th:href="@{/Areas_Of_Activity}">Areas Of Activity</a></li>
-            <li><a class="dropdown-item" th:href="@{/Firm_Contacts}">Contact us</a></li>
-          </ul>
-        </li>
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-          <a class="nav-link mx-2" aria-current="page" th:href="@{/logout}">Log out</a>
-        </li>
-        <li class="nav-item" sec:authorize="!isAuthenticated()">
-          <a class="nav-link mx-2" aria-current="page" th:href="@{/loginUser}">Log in</a>
-        </li>
-      </ul>
+        <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto ">
+                <li class="nav-item">
+                    <a class="nav-link mx-2 active" aria-current="page" href="/">Home</a>
+                </li>
+                <li sec:authorize="hasRole('MANAGER')" class="nav-item">
+                    <a class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link mx-2" href="/legalCase/list">Cases</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Company
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" th:href="@{/Firm_Organization}">Firm Organization</a></li>
+                        <li><a class="dropdown-item" th:href="@{/Areas_Of_Activity}">Areas Of Activity</a></li>
+                        <li><a class="dropdown-item" th:href="@{/Firm_Contacts}">Contact us</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link mx-2" aria-current="page" th:href="@{/logout}">Log out</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link mx-2" aria-current="page" th:href="@{/loginUser}">Log in</a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
 <section class="vh-100" style="background-color: #eee;">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-12 col-xl-11">
+                <div class="card text-black" style="border-radius: 25px;">
+                    <div class="card-body p-md-5">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Submit File</p>
+                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Submit File</p>
 
-                <form class="mx-1 mx-md-4" th:action="@{/legalCase/submit-document/{id}(id=${caseId})}" method="post" enctype="multipart/form-data">
+                                <form class="mx-1 mx-md-4" th:action="@{/legalCase/submit-document/{id}(id=${caseId})}"
+                                      method="post" enctype="multipart/form-data">
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                      <input type="file" id="file" name="file" class="form-control" required autofocus="autofocus"/>
-                      <label class="form-label" for="file">Associated Case File</label>
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <input type="file" id="file" name="file" class="form-control" required
+                                                   autofocus="autofocus"/>
+                                            <label class="form-label" for="file">Associated Case File</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                        <button type="submit" class="btn btn-primary btn-lg">Submit File</button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
                     </div>
-                  </div>
-
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="submit" class="btn btn-primary btn-lg">Submit File</button>
-                  </div>
-
-                </form>
-
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 </body>
 </html>

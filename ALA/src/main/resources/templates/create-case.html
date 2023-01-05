@@ -21,9 +21,6 @@
                 <li class="nav-item">
                     <a class="nav-link mx-2 active" aria-current="page" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Blabla</a>
-                </li>
                 <li sec:authorize="hasRole('MANAGER')" class="nav-item">
                     <a class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
                 </li>
@@ -51,6 +48,21 @@
         </div>
     </div>
 </nav>
+
+<! Create case invalid lawyer message>
+<div th:if="${param.invalidLawyer}" class="alert alert-danger" role="alert">
+    You don't have permissions to create a case with the selected lawyer.
+</div>
+
+<! Create case invalid client message>
+<div th:if="${param.clientNotFound}" class="alert alert-danger" role="alert">
+    The client you tried to use doesn't exist.
+</div>
+
+<! Create duplicate case message>
+<div th:if="${param.caseExists}" class="alert alert-danger" role="alert">
+    A case with the same name already exists.
+</div>
 
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
@@ -83,20 +95,37 @@
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
-                                            <input type="email" id="clientEmail" class="form-control"
-                                                   th:field="*{clientEmail}"
-                                                   required autofocus="autofocus"/>
+                                            <select class="form-select form-control" id="clientEmail"
+                                                    th:field="*{clientEmail}" required autofocus="autofocus">
+                                                <option th:each="client : ${clients}" th:value="${client.email}"
+                                                        th:text="${client.email}"/>
+                                            </select>
                                             <label class="form-label" for="clientEmail">Associated Client Email</label>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex flex-row align-items-center mb-4">
+                                    <div sec:authorize="hasRole('MANAGER')"
+                                         class="d-flex flex-row align-items-center mb-4">
                                         <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
-                                            <input type="email" id="lawyerEmail" class="form-control"
-                                                   th:field="*{lawyerEmail}"
-                                                   required autofocus="autofocus"/>
+                                            <select class="form-select form-control" id="lawyerEmail"
+                                                    th:field="*{lawyerEmail}" required autofocus="autofocus">
+                                                <option th:each="lawyer : ${lawyers}" th:value="${lawyer.email}"
+                                                        th:text="${lawyer.email}"/>
+                                            </select>
                                             <label class="form-label" for="lawyerEmail">Associated Lawyer Email</label>
+                                        </div>
+                                    </div>
+
+                                    <div sec:authorize="hasRole('LAWYER')"
+                                         class="d-flex flex-row align-items-center mb-4">
+                                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <input type="email" id="defaultLawyerEmail" class="form-control"
+                                                   th:field="*{lawyerEmail}" th:value="*{lawyerEmail}" disabled
+                                                   readonly/>
+                                            <label class="form-label" for="defaultLawyerEmail">Associated Lawyer
+                                                Email</label>
                                         </div>
                                     </div>
 

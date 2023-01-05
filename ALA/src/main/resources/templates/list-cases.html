@@ -21,9 +21,6 @@
                 <li class="nav-item">
                     <a class="nav-link mx-2 active" aria-current="page" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link mx-2" href="#">Blabla</a>
-                </li>
                 <li sec:authorize="hasRole('MANAGER')" class="nav-item">
                     <a class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
                 </li>
@@ -104,7 +101,8 @@
             <td th:text="${case.client.getFullName()}"/>
             <td th:text="${case.lawyer.getFullName()}"/>
             <td>
-                <a sec:authorize="hasRole('MANAGER')" th:href="@{/legalCase/delete/{id}(id=${case.id})}" class="btn btn-danger">Delete</a>
+                <a sec:authorize="hasRole('MANAGER')" th:href="@{/legalCase/delete/{id}(id=${case.id})}"
+                   class="btn btn-danger">Delete</a>
                 <a th:href="@{/legalCase/submit-document/{id}(id=${case.id})}" class="btn btn-primary">Upload File</a>
             </td>
         </tr>
