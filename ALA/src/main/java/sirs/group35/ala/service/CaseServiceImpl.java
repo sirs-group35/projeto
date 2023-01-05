@@ -53,6 +53,14 @@ public class CaseServiceImpl implements CaseService {
     @Override
     public LegalCaseDTO registerLegalCase(LegalCaseDTO newLegalCaseDTO) {
         LegalCase newLegalCase = new LegalCase();
+
+        // print LegalCaseDTO title, description, client email and lawyer email
+        System.out.println("LegalCaseDTO: ");
+        System.out.println("Title: " + newLegalCaseDTO.getTitle());
+        System.out.println("Description: " + newLegalCaseDTO.getDescription());
+        System.out.println("Client Email: " + newLegalCaseDTO.getClientEmail());
+        System.out.println("Lawyer Email: " + newLegalCaseDTO.getLawyerEmail());
+
         newLegalCase.setTitle(newLegalCaseDTO.getTitle());
 
         newLegalCase.setDescription(newLegalCaseDTO.getDescription());
@@ -60,6 +68,10 @@ public class CaseServiceImpl implements CaseService {
         Client client = clientRepository.findByEmail(newLegalCaseDTO.getClientEmail());
 
         Lawyer lawyer = lawyerRepository.findByEmail(newLegalCaseDTO.getLawyerEmail());
+
+        // Print Lawyer and Client
+        System.out.println("Client: " + client);
+        System.out.println("Lawyer: " + lawyer);
 
         client.addCase(newLegalCase);
         lawyer.addCase(newLegalCase);

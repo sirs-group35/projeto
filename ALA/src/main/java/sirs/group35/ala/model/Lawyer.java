@@ -3,9 +3,7 @@ package sirs.group35.ala.model;
 import jakarta.persistence.*;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 @Entity
 public class Lawyer extends User {
@@ -28,7 +26,11 @@ public class Lawyer extends User {
         this.legalCases.add(legalCase);
     }
 
-    public Collection<LegalCase> getLegalCase() {
+    public void removeCase(LegalCase legalCase) {
+        this.legalCases.remove(legalCase);
+    }
+
+    public Collection<LegalCase> getLegalCases() {
         return legalCases;
     }
 }

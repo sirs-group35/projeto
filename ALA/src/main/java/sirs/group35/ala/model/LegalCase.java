@@ -17,13 +17,13 @@ public class LegalCase {
     private String title;
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Client client;
-    
-    @ManyToOne(cascade = CascadeType.ALL)
+
+    @ManyToOne
     private Lawyer lawyer;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "case_file",
             joinColumns = @JoinColumn(name = "case_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "file_id", referencedColumnName = "id", unique = true))

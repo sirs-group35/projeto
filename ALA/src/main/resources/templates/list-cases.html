@@ -55,19 +55,19 @@
 <br>
 <br>
 
-<! Registration success message>
-<div th:if="${param.registrationSuccess}" class="alert alert-success" role="alert">
-    You have successfully registered a new lawyer.
+<! Case creation success message>
+<div th:if="${param.createSuccess}" class="alert alert-success" role="alert">
+    You have successfully created a new case.
 </div>
 
 <! Delete success message>
 <div th:if="${param.deleteSuccess}" class="alert alert-danger" role="alert">
-    You have deleted a lawyer.
+    You have deleted a case.
 </div>
 
 <div class="container">
 
-    <h3>List Employees</h3>
+    <h3>Your Cases</h3>
 
     <hr/>
 
@@ -75,27 +75,29 @@
 
         <thead>
         <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Actions</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Client</th>
+            <th>Lawyer</th>
+            <th sec:authorize="hasRole('MANAGER')">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="lawyer: ${lawyers}">
-            <td th:text="${lawyer.firstName}"/>
-            <td th:text="${lawyer.lastName}"/>
-            <td th:text="${lawyer.email}"/>
-            <td>
-                <a th:href="@{/manager/delete-lawyer(id=${lawyer.id})}" class="btn btn-danger">Delete</a>
+        <tr th:each="case: ${cases}">
+            <td th:text="${case.title}"/>
+            <td th:text="${case.description}"/>
+            <td th:text="${case.client.getFullName()}"/>
+            <td th:text="${case.lawyer.getFullName()}"/>
+            <td sec:authorize="hasRole('MANAGER')">
+                <a th:href="@{/legalCase/delete/{id}(id=${case.id})}" class="btn btn-danger">Delete</a>
             </td>
         </tr>
         </tbody>
 
     </table>
 
-    <div class="d-flex flex-row-reverse mx-2">
-        <a class="btn btn-primary" href="/manager/registration-lawyer" type="button">Add Lawyer</a>
+    <div sec:authorize="hasAnyRole('MANAGER', 'LAWYER')" class="d-flex flex-row-reverse mx-2">
+        <a class="btn btn-primary" href="/legalCase/create" type="button">Add Case</a>
     </div>
 </div>
 
