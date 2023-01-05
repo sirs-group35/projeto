@@ -60,14 +60,24 @@
     You have successfully created a new case.
 </div>
 
-<! Case creation success message>
-<div th:if="${param.fileSubmitSuccess}" class="alert alert-success" role="alert">
-    You have successfully submited a new file.
-</div>
-
-<! Delete success message>
+<! Case delete success message>
 <div th:if="${param.deleteSuccess}" class="alert alert-danger" role="alert">
     You have deleted a case.
+</div>
+
+<! File submit success message>
+<div th:if="${param.fileSubmitSuccess}" class="alert alert-success" role="alert">
+    You have successfully submitted a new document.
+</div>
+
+<! File submission invalid access message>
+<div th:if="${param.invalidAccess}" class="alert alert-danger" role="alert">
+    You don't have access to the case you tried to upload a document to.
+</div>
+
+<! File submission inexistent case message>
+<div th:if="${param.invalidAccess}" class="alert alert-danger" role="alert">
+    You tried to upload a document to a case that doesn't exist.
 </div>
 
 <div class="container">
@@ -95,7 +105,7 @@
             <td th:text="${case.lawyer.getFullName()}"/>
             <td>
                 <a sec:authorize="hasRole('MANAGER')" th:href="@{/legalCase/delete/{id}(id=${case.id})}" class="btn btn-danger">Delete</a>
-                <a th:href="@{/legalCase/submit-document/{id}(id=${case.id})}" class="btn btn-danger">Upload File</a>
+                <a th:href="@{/legalCase/submit-document/{id}(id=${case.id})}" class="btn btn-primary">Upload File</a>
             </td>
         </tr>
         </tbody>

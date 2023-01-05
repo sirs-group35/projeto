@@ -16,7 +16,7 @@ public class FileDB {
     private String type;
 
     @Lob
-    @Column(columnDefinition = "BLOB", length = 536870912)
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] data;
 
     public Long getId() {

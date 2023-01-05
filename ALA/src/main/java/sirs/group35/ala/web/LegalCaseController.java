@@ -112,9 +112,42 @@ public class LegalCaseController {
 
     @PostMapping("/legalCase/submit-document/{id}")
     String submitDocument(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
+        // Get current authenticated user
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
 
+        // Get case by id
+        Optional<LegalCase> legalCaseOpt = legalCaseRepository.findById(id);
 
-        caseService.submitDocument(id, file);
+        if (legalCaseOpt.isEmpty()) {
+            return "redirect:/legalCase/list?invalidCase";
+        }
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            User user = userRepository.findByEmail(((UserDetails) authentication.getPrincipal()).getUsername());
+
+            Collection<Role> userRoles = user.getRoles();
+
+            if (userRoles.contains(roleRepository.findByName("ROLE_MANAGER"))) {
+                caseService.submitDocument(id, file);
+            } else if (userRoles.contains(roleRepository.findByName("ROLE_LAWYER"))) {
+                // Cast user to lawyer
+                Lawyer lawyer = lawyerRepository.findByEmail(user.getEmail());
+                if (lawyer.hasCase(legalCaseOpt.get())) {
+                    caseService.submitDocument(id, file);
+                } else {
+                    return "redirect:/legalCase/list?invalidAccess";
+                }
+            }else if (userRoles.contains(roleRepository.findByName("ROLE_CLIENT"))) {
+                // Cast user to client
+                Client client = clientRepository.findByEmail(user.getEmail());
+                if (client.hasCase(legalCaseOpt.get())) {
+                    caseService.submitDocument(id, file);
+                } else {
+                    return "redirect:/legalCase/list?invalidAccess";
+                }
+            }
+        }
 
         return "redirect:/legalCase/list?fileSubmitSuccess";
     }

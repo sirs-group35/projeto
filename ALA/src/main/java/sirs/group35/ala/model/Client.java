@@ -22,6 +22,9 @@ public class Client extends User {
         this.legalCases = new HashSet<LegalCase>();
     }
 
+    public boolean hasCase(LegalCase legalCase) {
+        return legalCases.contains(legalCase);
+    }
 
     public void addCase(LegalCase legalCase) {
         this.legalCases.add(legalCase);
