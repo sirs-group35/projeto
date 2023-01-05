@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface LegalCaseRepository extends JpaRepository<LegalCase, Long> {
     List<LegalCase> findByLawyer(Lawyer lawyer);
+
     List<LegalCase> findByClient(Client client);
+
     List<LegalCase> findByTitle(String title);
 }

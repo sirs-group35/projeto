@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/manager/**").hasRole("MANAGER")
                 .requestMatchers("/legalCase/create**").hasAnyRole("LAWYER", "MANAGER")
                 .requestMatchers("/legalCase/delete**").hasRole("MANAGER")
-                .requestMatchers("/registration**", "/js/**", "/css/**", "/img/**", "/", "/loginUser**").permitAll()
+                .requestMatchers("/registration**", "/js/**", "/css/**", "/img/**", "/", "/loginUser**", "/Firm_Organization", "/Areas_Of_Activity", "/Firm_Contacts").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

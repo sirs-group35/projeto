@@ -8,7 +8,7 @@ import java.util.HashSet;
 @Entity
 @Table(name = "legal_case", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
 public class LegalCase {
-    
+
     // A case has a title, a description, a client, a lawyer and files
 
     @Id
@@ -75,8 +75,25 @@ public class LegalCase {
         this.files.add(file);
     }
 
+    public void deleteFileById(Long id) {
+        for (FileDB file : this.files) {
+            if (file.getId().equals(id)) {
+                this.files.remove(file);
+                break;
+            }
+        }
+    }
+
     public Collection<FileDB> getFiles() {
         return files;
     }
 
+    // Get string with all file names separated by line breaks
+    public String getFilesString() {
+        String filesString = "";
+        for (FileDB file : files) {
+            filesString += file.getName() + "\n";
+        }
+        return filesString;
+    }
 }

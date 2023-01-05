@@ -7,5 +7,5 @@ import sirs.group35.ala.model.Client;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Client findByEmail(String email);
-    
+
 }

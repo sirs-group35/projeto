@@ -18,6 +18,7 @@ public interface CaseService {
 
     List<String> getDocuments(Long id);
 
-    FileDB getDocument(Long id, String documentName);
+    FileDB getDocument(Long id, Long documentId);
 
+    void deleteDocument(Long id, Long documentId);
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "file", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 public class FileDB {
-  
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,7 +20,7 @@ public class FileDB {
     private byte[] data;
 
     public Long getId() {
-       return id;
+        return id;
     }
 
     public String getName() {

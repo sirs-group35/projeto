@@ -7,5 +7,5 @@ import sirs.group35.ala.model.Lawyer;
 @Repository
 public interface LawyerRepository extends JpaRepository<Lawyer, Long> {
     Lawyer findByEmail(String email);
-    
+
 }

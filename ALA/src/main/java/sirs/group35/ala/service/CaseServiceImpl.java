@@ -88,11 +88,11 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public String submitDocument(Long caseId, MultipartFile file) {
-		try {
-			if (file.isEmpty()) {
+        try {
+            if (file.isEmpty()) {
                 //TODO: Não devia ser IOException
-				throw new IOException("Failed to store empty file.");
-			}
+                throw new IOException("Failed to store empty file.");
+            }
 
             // Print case id
             System.out.println("Case ID: " + caseId);
@@ -123,10 +123,9 @@ public class CaseServiceImpl implements CaseService {
 
             fileDBRepository.save(fileDB);
             legalCaseRepository.save(legalCase);
-		}
-		catch (Exception e) {
-			return "Failed to store file. "+ e.getMessage();
-		}
+        } catch (Exception e) {
+            return "Failed to store file. " + e.getMessage();
+        }
         return "File stored successfully.";
     }
 
@@ -140,13 +139,25 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public FileDB getDocument(Long caseId, String documentName) {
+    public FileDB getDocument(Long caseId, Long documentId) {
         LegalCase legalCase = legalCaseRepository.findById(caseId).get();
+
         if (legalCase == null) {
             return null;
         }
-        //Get file with documentName from case
-        return legalCase.getFiles().stream().filter(file -> file.getName().equals(documentName)).findFirst().orElse(null);
+
+        //Get file with documentId from case
+        return legalCase.getFiles().stream().filter(file -> file.getId() == documentId).findFirst().orElse(null);
     }
 
+    @Override
+    public void deleteDocument(Long caseId, Long documentId) {
+        LegalCase legalCase = legalCaseRepository.findById(caseId).get();
+
+        if (legalCase == null) {
+            return;
+        }
+
+        legalCase.deleteFileById(documentId);
+    }
 }
