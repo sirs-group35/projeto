@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.UUID;
 
 @Entity
 @Table(name = "legal_case", uniqueConstraints = @UniqueConstraint(columnNames = "title"))
@@ -12,8 +13,8 @@ public class LegalCase {
     // A case has a title, a description, a client, a lawyer and files
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID", strategy = GenerationType.AUTO)
+    private UUID id;
     private String title;
     private String description;
 
@@ -29,12 +30,8 @@ public class LegalCase {
             inverseJoinColumns = @JoinColumn(name = "file_id", referencedColumnName = "id", unique = true))
     private Collection<FileDB> files = new HashSet<FileDB>();
 
-    public Long getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -75,7 +72,7 @@ public class LegalCase {
         this.files.add(file);
     }
 
-    public void deleteFileById(Long id) {
+    public void deleteFileById(UUID id) {
         for (FileDB file : this.files) {
             if (file.getId().equals(id)) {
                 this.files.remove(file);

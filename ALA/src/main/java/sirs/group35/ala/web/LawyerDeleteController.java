@@ -1,5 +1,7 @@
 package sirs.group35.ala.web;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +16,7 @@ public class LawyerDeleteController {
     }
 
     @GetMapping("/manager/delete-lawyer")
-    public String deleteLawyer(@RequestParam("id") Long id) {
+    public String deleteLawyer(@RequestParam("id") UUID id) {
         userService.deleteUser(id);
         return "redirect:/manager/list-lawyers?deleteSuccess";
     }

@@ -6,11 +6,12 @@ import sirs.group35.ala.model.Lawyer;
 import sirs.group35.ala.model.LegalCase;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface LegalCaseRepository extends JpaRepository<LegalCase, Long> {
+public interface LegalCaseRepository extends JpaRepository<LegalCase, UUID> {
     List<LegalCase> findByLawyer(Lawyer lawyer);
 
     List<LegalCase> findByClient(Client client);
 
-    List<LegalCase> findByTitle(String title);
+    LegalCase findByTitle(String title);
 }

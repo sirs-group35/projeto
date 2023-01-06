@@ -19,6 +19,7 @@ import sirs.group35.ala.web.dto.LegalCaseDTO;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class LegalCaseController {
@@ -101,13 +102,13 @@ public class LegalCaseController {
                 caseService.registerLegalCase(newLegalCaseDTO);
             } else if (userRoles.contains(roleRepository.findByName("ROLE_LAWYER"))) {
                 Lawyer lawyer = lawyerRepository.findByEmail(user.getEmail());
-
+                newLegalCaseDTO.setLawyerEmail(lawyer.getEmail());
                 // Check if lawyer DTO email is the same as the logged in lawyer
-                if (newLegalCaseDTO.getLawyerEmail().equals(lawyer.getEmail())) {
+                //if (newLegalCaseDTO.getLawyerEmail().equals(lawyer.getEmail())) {
                     caseService.registerLegalCase(newLegalCaseDTO);
-                } else {
-                    return "redirect:/legalCase/create?invalidLawyer";
-                }
+                //} else {
+                //    return "redirect:/legalCase/create?invalidLawyer";
+                //}
             }
         }
 
@@ -116,7 +117,7 @@ public class LegalCaseController {
 
     // Delete Case
     @GetMapping("/legalCase/delete/{id}")
-    public String deleteCase(@PathVariable("id") Long id) {
+    public String deleteCase(@PathVariable("id") UUID id) {
         Optional<LegalCase> legalCaseOpt = legalCaseRepository.findById(id);
 
         LegalCase legalCase = legalCaseOpt.get();
@@ -157,14 +158,14 @@ public class LegalCaseController {
     }
 
     @GetMapping("/legalCase/submit-document/{id}")
-    ModelAndView showSubmitDocumentForm(@PathVariable Long id) {
+    ModelAndView showSubmitDocumentForm(@PathVariable UUID id) {
         ModelAndView mav = new ModelAndView("submit-document");
         mav.addObject("caseId", id);
         return mav;
     }
 
     @PostMapping("/legalCase/submit-document/{id}")
-    String submitDocument(@PathVariable("id") Long id, @RequestParam("file") MultipartFile file) {
+    String submitDocument(@PathVariable("id") UUID id, @RequestParam("file") MultipartFile file) {
         // Get current authenticated user
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
@@ -206,7 +207,7 @@ public class LegalCaseController {
     }
 
     @GetMapping("/legalCase/details/{id}")
-    ModelAndView showCaseDetails(@PathVariable Long id) {
+    ModelAndView showCaseDetails(@PathVariable UUID id) {
         // Get current authenticated user
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
@@ -249,7 +250,7 @@ public class LegalCaseController {
     }
 
     @GetMapping("/legalCase/{caseId}/download-document/{docId}")
-    ResponseEntity<byte[]> getDocument(@PathVariable Long caseId, @PathVariable Long docId) {
+    ResponseEntity<byte[]> getDocument(@PathVariable UUID caseId, @PathVariable UUID docId) {
         FileDB file = null;
 
         // Get current authenticated user
@@ -296,7 +297,7 @@ public class LegalCaseController {
     }
 
     @GetMapping("/legalCase/{caseId}/delete-document/{docId}")
-    String deleteDocument(@PathVariable Long caseId, @PathVariable Long docId) {
+    String deleteDocument(@PathVariable UUID caseId, @PathVariable UUID docId) {
         // Get current authenticated user
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();

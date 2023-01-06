@@ -1,5 +1,7 @@
 package sirs.group35.ala.model;
 
+import java.util.UUID;
+
 import jakarta.persistence.*;
 
 
@@ -8,8 +10,8 @@ import jakarta.persistence.*;
 public class FileDB {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID", strategy = GenerationType.AUTO)
+    private UUID id;
 
     private String name;
 
@@ -19,7 +21,7 @@ public class FileDB {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] data;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

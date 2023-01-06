@@ -17,6 +17,8 @@ import sirs.group35.ala.web.dto.LegalCaseDTO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CaseServiceImpl implements CaseService {
@@ -79,15 +81,12 @@ public class CaseServiceImpl implements CaseService {
         newLegalCase.setClient(client);
         legalCaseRepository.save(newLegalCase);
 
-        //clientRepository.save(client);
-        //lawyerRepository.save(lawyer);
-
         return newLegalCaseDTO;
 
     }
 
     @Override
-    public String submitDocument(Long caseId, MultipartFile file) {
+    public String submitDocument(UUID caseId, MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 //TODO: Não devia ser IOException
@@ -100,15 +99,17 @@ public class CaseServiceImpl implements CaseService {
             // Print file name
             System.out.println("File name: " + file.getOriginalFilename());
 
-            LegalCase legalCase = legalCaseRepository.findById(caseId).get();
+            Optional<LegalCase> legalCaseOptional = legalCaseRepository.findById(caseId);
 
-            // Print legalCase name
-            System.out.println("LegalCase name: " + legalCase.getTitle());
-
-            if (legalCase == null) {
+            if (legalCaseOptional.isEmpty()) {
                 //TODO: Não devia ser IOException
                 throw new IOException("Case not found.");
             }
+
+            LegalCase legalCase = legalCaseOptional.get();
+
+            // Print legalCase name
+            System.out.println("LegalCase name: " + legalCase.getTitle());
 
             if (legalCase.getFiles().stream().map(FileDB::getName).toList().contains(file.getOriginalFilename())) {
                 //TODO: Não devia ser IOException
@@ -130,7 +131,7 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public List<String> getDocuments(Long caseId) {
+    public List<String> getDocuments(UUID caseId) {
         LegalCase legalCase = legalCaseRepository.findById(caseId).get();
         if (legalCase == null) {
             return null;
@@ -139,7 +140,7 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public FileDB getDocument(Long caseId, Long documentId) {
+    public FileDB getDocument(UUID caseId, UUID documentId) {
         LegalCase legalCase = legalCaseRepository.findById(caseId).get();
 
         if (legalCase == null) {
@@ -147,11 +148,11 @@ public class CaseServiceImpl implements CaseService {
         }
 
         //Get file with documentId from case
-        return legalCase.getFiles().stream().filter(file -> file.getId() == documentId).findFirst().orElse(null);
+        return legalCase.getFiles().stream().filter(file -> file.getId().equals(documentId)).findFirst().orElse(null);
     }
 
     @Override
-    public void deleteDocument(Long caseId, Long documentId) {
+    public void deleteDocument(UUID caseId, UUID documentId) {
         LegalCase legalCase = legalCaseRepository.findById(caseId).get();
 
         if (legalCase == null) {

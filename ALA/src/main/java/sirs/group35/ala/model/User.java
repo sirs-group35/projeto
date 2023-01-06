@@ -1,6 +1,14 @@
 package sirs.group35.ala.model;
 
 import jakarta.persistence.*;
+import java.util.UUID;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Collection;
 
@@ -9,8 +17,8 @@ import java.util.Collection;
 public abstract class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    private UUID id;
     private String firstName;
     private String lastName;
     private String email;
@@ -33,12 +41,8 @@ public abstract class User {
         this.roles = roles;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() {

@@ -6,6 +6,7 @@ import sirs.group35.ala.model.FileDB;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public interface CaseService {
@@ -14,11 +15,11 @@ public interface CaseService {
 
     LegalCaseDTO registerLegalCase(LegalCaseDTO newLegalCaseDTO);
 
-    String submitDocument(Long caseId, MultipartFile file);
+    String submitDocument(UUID caseId, MultipartFile file);
 
-    List<String> getDocuments(Long id);
+    List<String> getDocuments(UUID id);
 
-    FileDB getDocument(Long id, Long documentId);
+    FileDB getDocument(UUID id, UUID documentId);
 
-    void deleteDocument(Long id, Long documentId);
+    void deleteDocument(UUID id, UUID documentId);
 }
