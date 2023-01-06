@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <title>Login</title>
@@ -22,6 +23,9 @@
                 </li>
                 <li sec:authorize="hasRole('MANAGER')" class="nav-item">
                     <a class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
+                </li>
+                <li sec:authorize="hasRole('MANAGER')" class="nav-item">
+                    <a class="nav-link mx-2" href="/manager/audit-documents">Audit Documents</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
                     <a class="nav-link mx-2" href="/legalCase/list">Cases</a>

@@ -21,6 +21,11 @@ public class FileDB {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] data;
 
+    private Long timestamp;
+
+    @Column(columnDefinition = "VARCHAR(512)")
+    private String signedHash;
+
     public UUID getId() {
         return id;
     }
@@ -47,6 +52,22 @@ public class FileDB {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getSignedHash() {
+        return signedHash;
+    }
+
+    public void setSignedHash(String signedHash) {
+        this.signedHash = signedHash;
     }
 
 }

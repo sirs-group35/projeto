@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-    <title>Case Details</title>
+    <title>Audit Documents</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -55,83 +55,38 @@
 <br>
 <br>
 
-<! Nonexistent document >
-<div th:if="${param.invalidDocument}" class="alert alert-danger" role="alert">
-    The document you were trying to delete doesn't exist.
-</div>
-
-<! Document deleted successfully >
-<div th:if="${param.fileDeleteSuccess}" class="alert alert-danger" role="alert">
-    You deleted a document.
-</div>
-
-<! Not enough perms to delete >
-<div th:if="${param.invalidDelete}" class="alert alert-danger" role="alert">
-    You don't have perms to delete a document.
-</div>
-
 <div class="container">
-    <div class="row d-flex justify-content-center align-items-center">
-        <h1 class="text-center">Case Details</h1>
-    </div>
-    <br>
-    <div class="row d-flex justify-content-center align-items-center">
-        <h3 class="text-left">Title: </h3>
-        <span th:text="${case.title}"></span>
-    </div>
-    <br>
-    <br>
-    <div class="row d-flex justify-content-center align-items-center">
-        <h3 class="text-left">Client: </h3>
-        <span th:text="${case.client.getFullName()}"></span>
-    </div>
-    <br>
-    <br>
-    <div class="row d-flex justify-content-center align-items-center">
-        <h3 class="text-left">Lawyer: </h3>
-        <span th:text="${case.lawyer.getFullName()}"></span>
-    </div>
-    <br>
-    <br>
-    <div class="row d-flex justify-content-center align-items-center">
-        <h3 class="text-left">Description: </h3>
-        <span style="white-space: pre-line" th:text="${case.description}"></span>
-    </div>
-    <br>
-    <br>
-    <div class="container">
 
-        <h2 class="text-center">Associated Files</h2>
+    <h3>Available Files</h3>
 
-        <hr/>
+    <hr/>
 
-        <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped">
 
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="file: ${case.files}">
-                <td th:text="${file.name}"/>
-                <td>
-                    <a sec:authorize="hasAnyRole('MANAGER')" th:href="@{/legalCase/delete/{id}(id=${case.id})}"
-                       class="btn btn-danger">Delete</a>
-                    <a th:href="@{/legalCase/{caseid}/download-document/{docId}(caseid=${case.id}, docId=${file.id})}"
-                       class="btn btn-primary">Download File</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Date of Submission</th>
+            <th>Hash</th>
+            <th>Validated</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="file: ${files}">
+            <td style="white-space: pre-line" th:text="${file.name}"/>
+            <td th:text="${file.type}"/>
+            <td th:text="${file.timestamp}"/>
+            <td style="word-wrap: break-word; max-width: 150px;" th:text="${file.signedHash}"/>
+            <td th:text="${false ? file.type : file.timestamp}"/>
+        </tr>
+        </tbody>
+    </table>
 
-        <div class="d-flex flex-row-reverse mx-2">
-            <a th:href="@{/legalCase/submit-document/{id}(id=${case.id})}" class="btn btn-primary">Submit New File</a>
-        </div>
+    <div sec:authorize="hasAnyRole('MANAGER', 'LAWYER')" class="d-flex flex-row-reverse mx-2">
+        <a class="btn btn-primary" href="/legalCase/create" type="button">Add Case</a>
     </div>
 </div>
-
 
 </body>
 </html>

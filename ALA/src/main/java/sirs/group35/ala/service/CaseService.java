@@ -15,7 +15,7 @@ public interface CaseService {
 
     LegalCaseDTO registerLegalCase(LegalCaseDTO newLegalCaseDTO);
 
-    String submitDocument(UUID caseId, MultipartFile file);
+    String submitDocument(UUID caseId, MultipartFile file, Long timestamp, String signedHash);
 
     List<String> getDocuments(UUID id);
 

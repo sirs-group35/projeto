@@ -1,5 +1,6 @@
 package sirs.group35.ala.web;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,8 +16,15 @@ import org.springframework.web.servlet.ModelAndView;
 import sirs.group35.ala.model.*;
 import sirs.group35.ala.repository.*;
 import sirs.group35.ala.service.CaseService;
+import sirs.group35.ala.util.Initializer;
+import sirs.group35.ala.util.Signer;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,11 +42,14 @@ public class LegalCaseController {
 
     private final FileDBRepository fileDBRepository;
 
+    private final Initializer initializer;
+
     public LegalCaseController(CaseService caseService,
                                LegalCaseRepository legalCaseRepository,
                                LawyerRepository lawyerRepository, RoleRepository roleRepository,
                                ClientRepository clientRepository,
-                               UserRepository userRepository, FileDBRepository fileDBRepository) {
+                               UserRepository userRepository, FileDBRepository fileDBRepository,
+                               Initializer initializer) {
         this.caseService = caseService;
         this.legalCaseRepository = legalCaseRepository;
         this.lawyerRepository = lawyerRepository;
@@ -46,6 +57,7 @@ public class LegalCaseController {
         this.clientRepository = clientRepository;
         this.userRepository = userRepository;
         this.fileDBRepository = fileDBRepository;
+        this.initializer = initializer;
     }
 
     @GetMapping("/legalCase/create")
@@ -177,33 +189,59 @@ public class LegalCaseController {
             return "redirect:/legalCase/list?invalidCase";
         }
 
+        boolean authorized = false;
+
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             User user = userRepository.findByEmail(((UserDetails) authentication.getPrincipal()).getUsername());
 
             Collection<Role> userRoles = user.getRoles();
 
-            if (userRoles.contains(roleRepository.findByName("ROLE_MANAGER"))) {
-                caseService.submitDocument(id, file);
+            if (userRoles.contains(roleRepository.findByName("ROLE_MANAGER"))) { 
+                
+                authorized = true;
+
             } else if (userRoles.contains(roleRepository.findByName("ROLE_LAWYER"))) {
                 // Cast user to lawyer
                 Lawyer lawyer = lawyerRepository.findByEmail(user.getEmail());
-                if (lawyer.hasCase(legalCaseOpt.get())) {
-                    caseService.submitDocument(id, file);
-                } else {
-                    return "redirect:/legalCase/list?invalidAccess";
-                }
+
+                if (lawyer.hasCase(legalCaseOpt.get())) authorized = true;
+
             } else if (userRoles.contains(roleRepository.findByName("ROLE_CLIENT"))) {
                 // Cast user to client
                 Client client = clientRepository.findByEmail(user.getEmail());
-                if (client.hasCase(legalCaseOpt.get())) {
-                    caseService.submitDocument(id, file);
-                } else {
-                    return "redirect:/legalCase/list?invalidAccess";
-                }
+
+                if (client.hasCase(legalCaseOpt.get())) authorized = true;
+
             }
+            
         }
 
-        return "redirect:/legalCase/list?fileSubmitSuccess";
+        if (!authorized) return "redirect:/legalCase/list?invalidAccess";
+        
+        try {
+            
+            Signer signer = initializer.initSigner();
+
+            Long timestamp = Instant.now().toEpochMilli();
+            byte[] timestampBytes = ByteBuffer.allocate(Long.BYTES).putLong(timestamp).array();
+            byte[] fileBytes = file.getBytes();
+            byte[] signedHash = signer.signDocument(timestampBytes, fileBytes);
+            
+            String base64SignedHash = Base64.getEncoder().encodeToString(signedHash);
+            System.out.println("B64 SIGNED HASH: " + base64SignedHash);
+            
+            System.out.println("bruh5\n\n\n\n\n\n\n\n");
+            caseService.submitDocument(id, file, timestamp, base64SignedHash);
+            
+            System.out.println("bruh4\n\n\n\n\n\n\n\n");
+            return "redirect:/legalCase/list?fileSubmitSuccess";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/legalCase/list?fileSubmitFailure";
+        }
+
+
     }
 
     @GetMapping("/legalCase/details/{id}")
