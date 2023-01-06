@@ -62,5 +62,5 @@ public class Signer {
 
         return signedHash;
     }
-    
+
 }

@@ -1,16 +1,9 @@
 package sirs.group35.ala.model;
 
 import jakarta.persistence.*;
-import java.util.UUID;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))

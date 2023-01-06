@@ -1,11 +1,11 @@
 package sirs.group35.ala.service;
 
-import java.util.UUID;
-
 import org.springframework.security.core.userdetails.UserDetailsService;
 import sirs.group35.ala.model.Lawyer;
 import sirs.group35.ala.model.User;
 import sirs.group35.ala.web.dto.UserRegistrationDto;
+
+import java.util.UUID;
 
 public interface UserService extends UserDetailsService {
     User saveClient(UserRegistrationDto registrationDto);

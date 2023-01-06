@@ -1,5 +1,7 @@
 package sirs.group35.ala.util;
 
+import sirs.group35.ala.model.FileDB;
+
 import java.nio.ByteBuffer;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -7,9 +9,6 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
-
-import sirs.group35.ala.model.FileDB;
 
 
 public class Auditor {
@@ -24,16 +23,16 @@ public class Auditor {
         // Decode the base64-encoded public key
         byte[] publicKeyBytes = Base64.getDecoder().decode(base64PublicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
-        
+
         // Get the public key from the key specification
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PublicKey publicKey = keyFactory.generatePublic(keySpec);
-    
+
         System.out.println("GEN PUBLIC KEY: " + publicKey.toString());
         // Verify the signature with the public key
         Signature signature = Signature.getInstance("SHA256withRSA");
         System.out.println(file.getSignedHash());
-    
+
         // Hash the file content and timestamp with SHA-256
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(ByteBuffer.allocate(Long.BYTES).putLong(file.getTimestamp()).array());
@@ -43,7 +42,7 @@ public class Auditor {
         System.out.println("\n\n\n\n\n");
         System.out.println("FILE:" + file.getSignedHash());
         System.out.println("HASH: " + Base64.getEncoder().encodeToString(generatedHash));
-        
+
         System.out.println("SIGNED HASH SIZE: " + Base64.getDecoder().decode(file.getSignedHash()).length);
         System.out.println("PUBLIC KEY SIZE: " + publicKeyBytes.length);
         System.out.println("DATA SIZE: " + file.getData().length);
@@ -53,8 +52,8 @@ public class Auditor {
         signature.update(generatedHash);
         return signature.verify(Base64.getDecoder().decode(file.getSignedHash()));
     }
-    
-    
+
+
 }
 
 // oQY5W/x+viLBAvgJm+RmF4Vi71C+eYLPKG1fxccSVK0=

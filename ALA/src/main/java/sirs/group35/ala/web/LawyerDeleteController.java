@@ -1,11 +1,11 @@
 package sirs.group35.ala.web;
 
-import java.util.UUID;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sirs.group35.ala.service.UserService;
+
+import java.util.UUID;
 
 @Controller
 public class LawyerDeleteController {

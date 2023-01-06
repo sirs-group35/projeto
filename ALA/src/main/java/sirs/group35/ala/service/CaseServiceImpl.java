@@ -87,8 +87,8 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public String submitDocument(UUID caseId, MultipartFile file, Long timestamp, String signedHash) {
-		try {
-			if (file.isEmpty()) {
+        try {
+            if (file.isEmpty()) {
                 //TODO: Não devia ser IOException
                 System.out.println("bruh3\n\n\n\n\n\n\n\n");
                 throw new IOException("Failed to store empty file.");
@@ -125,6 +125,7 @@ public class CaseServiceImpl implements CaseService {
             fileDB.setTimestamp(timestamp);
             fileDB.setSignedHash(signedHash);
             legalCase.addFile(fileDB);
+            fileDB.setLegalCase(legalCase);
 
             fileDBRepository.save(fileDB);
             legalCaseRepository.save(legalCase);
@@ -165,5 +166,6 @@ public class CaseServiceImpl implements CaseService {
         }
 
         legalCase.deleteFileById(documentId);
+        fileDBRepository.deleteById(documentId);
     }
 }
