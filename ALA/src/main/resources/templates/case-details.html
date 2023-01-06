@@ -117,7 +117,8 @@
             <tr th:each="file: ${case.files}">
                 <td th:text="${file.name}"/>
                 <td>
-                    <a sec:authorize="hasAnyRole('MANAGER')" th:href="@{/legalCase/delete/{id}(id=${case.id})}"
+                    <a sec:authorize="hasAnyRole('MANAGER')"
+                       th:href="@{/legalCase/{caseId}/delete-document/{docId}(caseId=${case.id}, docId=${file.id})}"
                        class="btn btn-danger">Delete</a>
                     <a th:href="@{/legalCase/{caseid}/download-document/{docId}(caseid=${case.id}, docId=${file.id})}"
                        class="btn btn-primary">Download File</a>

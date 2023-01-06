@@ -1,10 +1,5 @@
 package sirs.group35.ala.web;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
 import sirs.group35.ala.model.FileDB;
 import sirs.group35.ala.repository.FileDBRepository;
 import sirs.group35.ala.util.Auditor;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
@@ -52,7 +50,7 @@ public class AuditDocumentsController {
 
             Auditor auditor = new Auditor(publicKey);
 
-            for (FileDB file: files) auditory.add(auditor.validateDocument(file));
+            for (FileDB file : files) auditory.add(auditor.validateDocument(file));
 
             mav.addObject("files", files);
             mav.addObject("auditory", auditory);

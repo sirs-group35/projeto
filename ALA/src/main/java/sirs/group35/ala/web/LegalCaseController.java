@@ -1,6 +1,5 @@
 package sirs.group35.ala.web;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +20,6 @@ import sirs.group35.ala.util.SendMail;
 import sirs.group35.ala.util.Signer;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.text.Format;
@@ -120,7 +118,7 @@ public class LegalCaseController {
                 newLegalCaseDTO.setLawyerEmail(lawyer.getEmail());
                 // Check if lawyer DTO email is the same as the logged in lawyer
                 //if (newLegalCaseDTO.getLawyerEmail().equals(lawyer.getEmail())) {
-                    caseService.registerLegalCase(newLegalCaseDTO);
+                caseService.registerLegalCase(newLegalCaseDTO);
                 //} else {
                 //    return "redirect:/legalCase/create?invalidLawyer";
                 //}
@@ -199,8 +197,8 @@ public class LegalCaseController {
 
             Collection<Role> userRoles = user.getRoles();
 
-            if (userRoles.contains(roleRepository.findByName("ROLE_MANAGER"))) { 
-                
+            if (userRoles.contains(roleRepository.findByName("ROLE_MANAGER"))) {
+
                 authorized = true;
 
             } else if (userRoles.contains(roleRepository.findByName("ROLE_LAWYER"))) {
@@ -216,20 +214,20 @@ public class LegalCaseController {
                 if (client.hasCase(legalCaseOpt.get())) authorized = true;
 
             }
-            
+
         }
 
         if (!authorized) return "redirect:/legalCase/list?invalidAccess";
-        
+
         try {
-            
+
             Signer signer = initializer.initSigner();
 
             Long timestamp = Instant.now().toEpochMilli();
             byte[] timestampBytes = ByteBuffer.allocate(Long.BYTES).putLong(timestamp).array();
             byte[] fileBytes = file.getBytes();
             byte[] signedHash = signer.signDocument(timestampBytes, fileBytes);
-            
+
             String base64SignedHash = Base64.getEncoder().encodeToString(signedHash);
 
             caseService.submitDocument(id, file, timestamp, base64SignedHash);
@@ -352,7 +350,7 @@ public class LegalCaseController {
         Optional<FileDB> fileOpt = fileDBRepository.findById(docId);
 
         if (fileOpt.isEmpty()) {
-            return "redirect:/legalCase/{caseId}/details?invalidDocument";
+            return "redirect:/legalCase/details/{caseId}?invalidDocument";
         }
 
         if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
@@ -361,12 +359,13 @@ public class LegalCaseController {
             Collection<Role> userRoles = user.getRoles();
 
             if (userRoles.contains(roleRepository.findByName("ROLE_MANAGER"))) {
+                System.out.println("Welp, it's getting here\n\n");
                 caseService.deleteDocument(caseId, docId);
             } else {
-                return "redirect:/legalCase/{caseId}/details?invalidDelete";
+                return "redirect:/legalCase/details/{caseId}?invalidDelete";
             }
         }
 
-        return "redirect:/legalCase/{caseId}/details?fileDeleteSuccess";
+        return "redirect:/legalCase/details/{caseId}?fileDeleteSuccess";
     }
 }

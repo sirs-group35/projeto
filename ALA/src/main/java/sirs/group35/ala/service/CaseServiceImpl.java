@@ -12,7 +12,6 @@ import sirs.group35.ala.repository.ClientRepository;
 import sirs.group35.ala.repository.FileDBRepository;
 import sirs.group35.ala.repository.LawyerRepository;
 import sirs.group35.ala.repository.LegalCaseRepository;
-import sirs.group35.ala.util.SendMail;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
 
 import java.io.IOException;
@@ -158,5 +157,6 @@ public class CaseServiceImpl implements CaseService {
         }
 
         legalCase.deleteFileById(documentId);
+        fileDBRepository.deleteById(documentId);
     }
 }

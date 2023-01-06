@@ -1,8 +1,8 @@
 package sirs.group35.ala.model;
 
-import java.util.UUID;
-
 import jakarta.persistence.*;
+
+import java.util.UUID;
 
 
 @Entity
@@ -25,6 +25,9 @@ public class FileDB {
 
     @Column(columnDefinition = "VARCHAR(512)")
     private String signedHash;
+
+    @ManyToOne
+    private LegalCase legalCase;
 
     public UUID getId() {
         return id;
@@ -70,4 +73,11 @@ public class FileDB {
         this.signedHash = signedHash;
     }
 
+    public LegalCase getLegalCase() {
+        return legalCase;
+    }
+
+    public void setLegalCase(LegalCase legalCase) {
+        this.legalCase = legalCase;
+    }
 }

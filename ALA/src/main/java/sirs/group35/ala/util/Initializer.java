@@ -11,10 +11,10 @@ public class Initializer {
     private String keyStoreType;
 
     public Initializer(
-      @Value("${server.ssl.key-store}") String keyStorePath,
-      @Value("${server.ssl.key-store-password}") String keyStorePassword,
-      @Value("${server.ssl.key-store-type}") String keyStoreType) {
- 
+            @Value("${server.ssl.key-store}") String keyStorePath,
+            @Value("${server.ssl.key-store-password}") String keyStorePassword,
+            @Value("${server.ssl.key-store-type}") String keyStoreType) {
+
         this.keyStorePath = keyStorePath;
         this.keyStorePassword = keyStorePassword;
         this.keyStoreType = keyStoreType;
@@ -22,6 +22,6 @@ public class Initializer {
 
     public Signer initSigner() {
         return new Signer(
-          this.keyStorePath, this.keyStorePassword, this.keyStoreType);
+                this.keyStorePath, this.keyStorePassword, this.keyStoreType);
     }
 }

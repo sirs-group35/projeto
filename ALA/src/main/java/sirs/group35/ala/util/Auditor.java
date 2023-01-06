@@ -1,5 +1,7 @@
 package sirs.group35.ala.util;
 
+import sirs.group35.ala.model.FileDB;
+
 import java.nio.ByteBuffer;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -7,9 +9,6 @@ import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
-
-import sirs.group35.ala.model.FileDB;
 
 
 public class Auditor {
@@ -24,7 +23,7 @@ public class Auditor {
         // Decode the base64-encoded public key
         byte[] publicKeyBytes = Base64.getDecoder().decode(base64PublicKey);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
-        
+
         // Get the public key from the key specification
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PublicKey publicKey = keyFactory.generatePublic(keySpec);
@@ -43,8 +42,8 @@ public class Auditor {
         signature.update(generatedHash);
         return signature.verify(Base64.getDecoder().decode(file.getSignedHash()));
     }
-    
-    
+
+
 }
 
 // oQY5W/x+viLBAvgJm+RmF4Vi71C+eYLPKG1fxccSVK0=

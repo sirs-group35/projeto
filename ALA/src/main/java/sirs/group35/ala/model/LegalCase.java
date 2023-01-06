@@ -75,7 +75,9 @@ public class LegalCase {
     public void deleteFileById(UUID id) {
         for (FileDB file : this.files) {
             if (file.getId().equals(id)) {
+
                 this.files.remove(file);
+
                 break;
             }
         }
