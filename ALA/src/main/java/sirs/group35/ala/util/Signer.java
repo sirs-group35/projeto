@@ -1,17 +1,11 @@
 package sirs.group35.ala.util;
 
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.security.InvalidKeyException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.Signature;
-import java.security.SignatureException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
+import java.util.Base64;
 import java.util.Enumeration;
 
 
@@ -56,7 +50,8 @@ public class Signer {
         System.out.println("FILE: " + file);
 
         byte[] hash = md.digest();
-        System.out.println(hash);
+        System.out.println("HASH: " + Base64.getEncoder().encodeToString(hash));
+        System.out.println("HASH SIZE: " + hash.length);
 
         Signature signature = Signature.getInstance("SHA256withRSA");
         PrivateKey privateKey = getPrivateKey();

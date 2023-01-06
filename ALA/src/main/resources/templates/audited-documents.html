@@ -73,12 +73,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="file: ${files}">
+        <tr th:each="file, iStat: ${files}">
             <td th:text="${file.name}"/>
             <td th:text="${file.type}"/>
-            <td th:text="${test.timestamp}"/>
+            <td th:text="${file.timestamp}"/>
             <td style="white-space: pre-line; word-wrap: break-word; max-width: 150px;" th:text="${file.signedHash}"/>
-            <td th:text="Valid"/>
+            <td th:text="${auditory[iStat.index] ? 'Valid' : 'Invalid'}"/>
         </tr>
         </tbody>
     </table>

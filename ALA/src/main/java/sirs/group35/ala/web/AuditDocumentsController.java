@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import sirs.group35.ala.model.FileDB;
 import sirs.group35.ala.repository.FileDBRepository;
 import sirs.group35.ala.util.Auditor;
-import sirs.group35.ala.web.dto.AuditDocumentDTO;
+
 
 @Controller
 @RequestMapping()
@@ -46,16 +45,18 @@ public class AuditDocumentsController {
 
         List<FileDB> files = fileDBRepository.findAll();
         List<Boolean> auditory = new ArrayList<Boolean>();
-        
 
         try {
             String publicKey = new String(publicKeyFile.getBytes(), StandardCharsets.UTF_8);
             publicKey = publicKey.replace("\n", "").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
 
             System.out.println("PUBLIC KEY: " + publicKey);
-            Auditor auditor = new Auditor(publicKey);
             
-            for (FileDB file: files) auditory.add(auditor.validateDocument(file, publicKey));
+            Auditor auditor = new Auditor(publicKey);
+
+            for (FileDB file: files) auditory.add(auditor.validateDocument(file));
+
+            System.out.println("bruh\n\n\n\n\n");
 
             mav.addObject("files", files);
             mav.addObject("auditory", auditory);
