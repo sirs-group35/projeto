@@ -4,8 +4,6 @@
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow in on enp0s3 from 192.168.0.11 proto tcp to any port 3306
-
-# Enable firewall
 sudo ufw enable
 
 # Set up IP configuration
