@@ -12,6 +12,7 @@ import sirs.group35.ala.repository.ClientRepository;
 import sirs.group35.ala.repository.FileDBRepository;
 import sirs.group35.ala.repository.LawyerRepository;
 import sirs.group35.ala.repository.LegalCaseRepository;
+import sirs.group35.ala.util.SendMail;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
 
 import java.io.IOException;
@@ -86,52 +87,44 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public String submitDocument(UUID caseId, MultipartFile file, Long timestamp, String signedHash) {
-		try {
-			if (file.isEmpty()) {
-                //TODO: Não devia ser IOException
-                System.out.println("bruh3\n\n\n\n\n\n\n\n");
-                throw new IOException("Failed to store empty file.");
-            }
-
-            // Print case id
-            System.out.println("Case ID: " + caseId);
-
-            // Print file name
-            System.out.println("File name: " + file.getOriginalFilename());
-
-            Optional<LegalCase> legalCaseOptional = legalCaseRepository.findById(caseId);
-
-            if (legalCaseOptional.isEmpty()) {
-                //TODO: Não devia ser IOException
-                throw new IOException("Case not found.");
-            }
-
-            LegalCase legalCase = legalCaseOptional.get();
-
-            // Print legalCase name
-            System.out.println("LegalCase name: " + legalCase.getTitle());
-
-            if (legalCase.getFiles().stream().map(FileDB::getName).toList().contains(file.getOriginalFilename())) {
-                //TODO: Não devia ser IOException
-                throw new IOException("File already exists.");
-            }
-
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            FileDB fileDB = new FileDB();
-            fileDB.setName(fileName);
-            fileDB.setType(file.getContentType());
-            fileDB.setData(file.getBytes());
-            fileDB.setTimestamp(timestamp);
-            fileDB.setSignedHash(signedHash);
-            legalCase.addFile(fileDB);
-
-            fileDBRepository.save(fileDB);
-            legalCaseRepository.save(legalCase);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Failed to store file. " + e.getMessage();
+    public String submitDocument(UUID caseId, MultipartFile file, Long timestamp, String signedHash) throws IOException {
+        if (file.isEmpty()) {
+            throw new IOException("Failed to store empty file.");
         }
+
+        // Print case id
+        System.out.println("Case ID: " + caseId);
+
+        // Print file name
+        System.out.println("File name: " + file.getOriginalFilename());
+
+        Optional<LegalCase> legalCaseOptional = legalCaseRepository.findById(caseId);
+
+        if (legalCaseOptional.isEmpty()) {
+            throw new IOException("Case not found.");
+        }
+
+        LegalCase legalCase = legalCaseOptional.get();
+
+        // Print legalCase name
+        System.out.println("LegalCase name: " + legalCase.getTitle());
+
+        if (legalCase.getFiles().stream().map(FileDB::getName).toList().contains(file.getOriginalFilename())) {
+            throw new IOException("File already exists.");
+        }
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        FileDB fileDB = new FileDB();
+        fileDB.setName(fileName);
+        fileDB.setType(file.getContentType());
+        fileDB.setData(file.getBytes());
+        fileDB.setTimestamp(timestamp);
+        fileDB.setSignedHash(signedHash);
+        legalCase.addFile(fileDB);
+
+        fileDBRepository.save(fileDB);
+        legalCaseRepository.save(legalCase);
+
         return "File stored successfully.";
     }
 

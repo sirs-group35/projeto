@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import sirs.group35.ala.model.FileDB;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public interface CaseService {
 
     LegalCaseDTO registerLegalCase(LegalCaseDTO newLegalCaseDTO);
 
-    String submitDocument(UUID caseId, MultipartFile file, Long timestamp, String signedHash);
+    String submitDocument(UUID caseId, MultipartFile file, Long timestamp, String signedHash) throws IOException;
 
     List<String> getDocuments(UUID id);
 

@@ -50,13 +50,9 @@ public class AuditDocumentsController {
             String publicKey = new String(publicKeyFile.getBytes(), StandardCharsets.UTF_8);
             publicKey = publicKey.replace("\n", "").replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "");
 
-            System.out.println("PUBLIC KEY: " + publicKey);
-            
             Auditor auditor = new Auditor(publicKey);
 
             for (FileDB file: files) auditory.add(auditor.validateDocument(file));
-
-            System.out.println("bruh\n\n\n\n\n");
 
             mav.addObject("files", files);
             mav.addObject("auditory", auditory);

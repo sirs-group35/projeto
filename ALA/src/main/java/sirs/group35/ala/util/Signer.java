@@ -46,19 +46,14 @@ public class Signer {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(timestamp);
         md.update(file);
-        System.out.println("TIMESTAMP: " + timestamp);
-        System.out.println("FILE: " + file);
 
         byte[] hash = md.digest();
-        System.out.println("HASH: " + Base64.getEncoder().encodeToString(hash));
-        System.out.println("HASH SIZE: " + hash.length);
 
         Signature signature = Signature.getInstance("SHA256withRSA");
         PrivateKey privateKey = getPrivateKey();
         signature.initSign(privateKey);
         signature.update(hash);
         byte[] signedHash = signature.sign();
-        System.out.println("SIGNED HASH: " + signedHash + "\n\n\n\n");
 
         return signedHash;
     }

@@ -29,10 +29,8 @@ public class Auditor {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PublicKey publicKey = keyFactory.generatePublic(keySpec);
     
-        System.out.println("GEN PUBLIC KEY: " + publicKey.toString());
         // Verify the signature with the public key
         Signature signature = Signature.getInstance("SHA256withRSA");
-        System.out.println(file.getSignedHash());
     
         // Hash the file content and timestamp with SHA-256
         MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -40,14 +38,6 @@ public class Auditor {
         md.update(file.getData());
         byte[] generatedHash = md.digest();
 
-        System.out.println("\n\n\n\n\n");
-        System.out.println("FILE:" + file.getSignedHash());
-        System.out.println("HASH: " + Base64.getEncoder().encodeToString(generatedHash));
-        
-        System.out.println("SIGNED HASH SIZE: " + Base64.getDecoder().decode(file.getSignedHash()).length);
-        System.out.println("PUBLIC KEY SIZE: " + publicKeyBytes.length);
-        System.out.println("DATA SIZE: " + file.getData().length);
-        System.out.println("GEN HASH SIZE: " + generatedHash.length);
         // Compare the decrypted hash and the generated hash
         signature.initVerify(publicKey);
         signature.update(generatedHash);

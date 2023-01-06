@@ -17,12 +17,15 @@ import sirs.group35.ala.model.*;
 import sirs.group35.ala.repository.*;
 import sirs.group35.ala.service.CaseService;
 import sirs.group35.ala.util.Initializer;
+import sirs.group35.ala.util.SendMail;
 import sirs.group35.ala.util.Signer;
 import sirs.group35.ala.web.dto.LegalCaseDTO;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Collection;
@@ -228,19 +231,17 @@ public class LegalCaseController {
             byte[] signedHash = signer.signDocument(timestampBytes, fileBytes);
             
             String base64SignedHash = Base64.getEncoder().encodeToString(signedHash);
-            System.out.println("B64 SIGNED HASH: " + base64SignedHash);
-            
-            System.out.println("bruh5\n\n\n\n\n\n\n\n");
+
             caseService.submitDocument(id, file, timestamp, base64SignedHash);
-            
-            System.out.println("bruh4\n\n\n\n\n\n\n\n");
+            User user = userRepository.findByEmail(((UserDetails) authentication.getPrincipal()).getUsername());
+            Format format = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+            SendMail.sendMail(user.getEmail(), user.getFirstName(), user.getLastName(), file.getOriginalFilename(), base64SignedHash, format.format(timestamp));
             return "redirect:/legalCase/list?fileSubmitSuccess";
 
         } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/legalCase/list?fileSubmitFailure";
         }
-
 
     }
 
