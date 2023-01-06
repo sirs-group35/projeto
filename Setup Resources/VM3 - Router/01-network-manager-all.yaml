@@ -1,0 +1,13 @@
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    enp0s3:
+    addresses:
+      - 192.168.1.10/24
+    nameservers:
+      addresses: [8.8.8.8, 8.8.4.4]
+    enp0s8:
+      dhcp4: yes
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]

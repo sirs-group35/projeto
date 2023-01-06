@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-    <title>Audit Documents</title>
+    <title>Audited Documents</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -52,12 +52,6 @@
     </div>
 </nav>
 
-
-<! Validation failed message>
-<div th:if="${param.documentValidationFailed}" class="alert alert-danger" role="alert">
-    One or more files failed while validating.
-</div>
-
 <br>
 <br>
 
@@ -75,34 +69,20 @@
             <th>Type</th>
             <th>Date of Submission</th>
             <th>Hash</th>
+            <th>Valid</th> 
         </tr>
         </thead>
         <tbody>
         <tr th:each="file: ${files}">
             <td th:text="${file.name}"/>
             <td th:text="${file.type}"/>
-            <td th:text="${file.timestamp}"/>
+            <td th:text="${test.timestamp}"/>
             <td style="white-space: pre-line; word-wrap: break-word; max-width: 150px;" th:text="${file.signedHash}"/>
+            <td th:text="Valid"/>
         </tr>
         </tbody>
     </table>
-    <form class="mx-1 mx-md-4" th:action="@{/manager/audit-documents/validate}" method="post" enctype="multipart/form-data">
-
-        <div class="d-flex flex-row align-items-center mb-4">
-            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-            <div class="form-outline flex-fill mb-0">
-                <input type="file" id="file" name="file" class="form-control" required
-                        autofocus="autofocus"/>
-                <label class="form-label" for="file">Public Key</label>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-            <button type="submit" class="btn btn-primary btn-lg">Audit Documents</button>
-        </div>
-    </form>
 </div>
 
 </body>
 </html>
-

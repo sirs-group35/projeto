@@ -2,15 +2,12 @@ package sirs.group35.ala.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.interfaces.RSAPrivateKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.UnrecoverableKeyException;
@@ -32,14 +29,14 @@ public class Signer {
         this.keyStoreType = keyStoreType;
     }
 
-    private KeyStore getKeyStore() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
+    private KeyStore getKeyStore() throws Exception {
         KeyStore keyStore = KeyStore.getInstance(keyStoreType);
         FileInputStream inputStream = new FileInputStream(keyStorePath);
         keyStore.load(inputStream, keyStorePassword.toCharArray());
         return keyStore;
     }
 
-    private PrivateKey getPrivateKey() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException, UnrecoverableKeyException {
+    private PrivateKey getPrivateKey() throws Exception {
         KeyStore keyStore = getKeyStore();
         Enumeration<String> aliases = keyStore.aliases();
         while (aliases.hasMoreElements()) {
@@ -50,7 +47,7 @@ public class Signer {
         return privateKey;
     }
 
-    public byte[] signDocument(byte[] timestamp, byte[] file) throws NoSuchAlgorithmException, IOException, UnrecoverableKeyException, KeyStoreException, CertificateException, InvalidKeyException, SignatureException {
+    public byte[] signDocument(byte[] timestamp, byte[] file) throws Exception {
 
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(timestamp);

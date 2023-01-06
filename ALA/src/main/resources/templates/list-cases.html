@@ -28,7 +28,7 @@
                     <a class="nav-link mx-2" href="/manager/audit-documents">Audit Documents</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <a class="nav-link mx-2" href="/legalCase/list">Cases</a>
+                    <a class="nav-link mx-2 active" href="/legalCase/list">Cases</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -71,7 +71,7 @@
 </div>
 
 <! File submit failure message>
-<div th:if="${param.fileSubmitFailure}" class="alert alert-success" role="alert">
+<div th:if="${param.fileSubmitFailure}" class="alert alert-danger" role="alert">
     The document couldn't be submitted. Please try again.
 </div>
 

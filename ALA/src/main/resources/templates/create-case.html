@@ -19,7 +19,7 @@
         <div class=" collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto ">
                 <li class="nav-item">
-                    <a class="nav-link mx-2 active" aria-current="page" href="/">Home</a>
+                    <a class="nav-link mx-2" aria-current="page" href="/">Home</a>
                 </li>
                 <li sec:authorize="hasRole('MANAGER')" class="nav-item">
                     <a class="nav-link mx-2" href="/manager/list-lawyers">Lawyers</a>
@@ -28,7 +28,7 @@
                     <a class="nav-link mx-2" href="/manager/audit-documents">Audit Documents</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <a class="nav-link mx-2" href="/legalCase/list">Cases</a>
+                    <a class="nav-link mx-2 active" href="/legalCase/list">Cases</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
